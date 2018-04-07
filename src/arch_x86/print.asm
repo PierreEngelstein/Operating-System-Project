@@ -23,59 +23,86 @@ print_str:
       add bx, 1
       jmp loop_str
 
-;Hexadecimal printing routine
+;Number printing routine
 ;Call with  :
-;             dx = hexadecimal number to be printed
+;             bx = base i which it must be printed
+;             dx = number to be printed
 ;return     :
 ;             nothing
-print_hex:
+;example : printing 0xdada in base 10 :
+;          mov ax, 0xdada
+;          mov cx, 10
+;          call print_number
+;
+print_number:
    pusha
-   mov cx, 4                  ;**we want it printed 4 times
-   loop_hex:
-      dec cx                  ;**We decrement cx each time
-      mov ax, dx              ;**We move the value we want to print into the ax register
-      shr dx, 4               ;**shift bx 4 bits to the right
-      and ax, 0xf             ;**We mask ah to get the last 4 bits
-      mov bx, s_hex_out         ;**Moving the base hex to bx
-      add bx, 2               ;**We add 2 to bx : we don't want to touch to '0x'
-      add bx, cx              ;**And we go where we are working now
-      cmp ax, 0xa             ;**Check if the current character is a letter or a character
-      jl print_hex_letter     ;**If it is a number (ascii value lower than 0xa) we go setting the value
-      add byte [bx], 7        ;**Otherwise we add 7 to the current byte
-      jl print_hex_letter     ;**And we go setting the value
-      print_hex_letter:
-         add byte [bx], al    ;**We add the value of the byte to the char at bx
-         cmp cx, 0            ;**We check if it is the end of the string to be printed
-         je print_hex_end     ;**If so, we jump to the end of the function
-         jmp loop_hex         ;**Otherwise, we loop again to the next number
-      print_hex_end:
-         mov bx, s_hex_out      ;**Setting the hex string to be printed
-         call print_str       ;**Printing it
-         call hexout_reset
-         popa
-         ret
-         hexout_reset:
-            pusha
-            mov bx, s_hex_out
-            mov cx, 5
-            add bx, 2                ;We don't want to change '0x'
-            hexout_reset_loop:
-               dec cx
-               cmp cx, 0      ;While the character is not '0', we put '0' in it
-               jne hexout_set
-               jmp hexout_end
-            hexout_set:
-               mov byte [bx], 0x30   ;We put '0' in bx (ASCII 0x30 = d.48)
-               inc bx                ;We move to the next character to reset
-               jmp hexout_reset_loop
-            hexout_end:
-               popa
-               ret
+   mov bx, 0           ;Number of characters to be printed
+   loop_number:
+      xor dx, dx
+      div cx
+      push dx
+      inc bx
+      cmp ax, 0
+      jne loop_number
+      je loop_print
+   loop_print:
+      pop dx
+      mov al, dl         ;We setup the number to be printed
+      cmp al, 0xa
+      jge loop_print_character
+      jl loop_print_number
+   loop_print_character:
+      add al, 55
+      jmp loop_print_continue
+   loop_print_number:
+      add al, '0'
+      jmp loop_print_continue
+   loop_print_continue:
+      mov ah, 0x0e
+      int 0x10
+      dec bx
+      cmp bx, 0
+      jne loop_print
+      je print_number_end
+   print_number_end:
+      ;We now print the base indicator if it is a binary, octal or hexadecimal
+      cmp cx, 2
+      je print_binary_indicator
+      cmp cx, 8
+      je print_octal_indicator
+      cmp cx, 16
+      je print_hexa_indicator
+      jmp print_number_real_end
+   print_binary_indicator:
+      mov al, 'b'
+      int 0x10
+      jmp print_number_real_end
+   print_octal_indicator:
+      mov al, 'o'
+      int 0x10
+      jmp print_number_real_end
+   print_hexa_indicator:
+      mov al, 'h'
+      int 0x10
+   print_number_real_end:
+      popa
+      ret
 
 ;Clearing the screen
 clear_screen:
    pusha
    mov ax, 0x3
+   int 0x10
+   popa
+   ret
+
+;Go to the next line
+goToLine:
+   pusha
+   mov ah, 0x0e
+   mov al, 10
+   int 0x10
+   mov al, 13
    int 0x10
    popa
    ret
