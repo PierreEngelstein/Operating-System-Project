@@ -23,39 +23,27 @@ sti                            ;Now that we are safe, we can re-enable the inter
 ;Now that's done, we can do whatever we want to.
 call clear_screen              ;We clear the screen from previous messages we did not needed
 ;Some messages...
+mov cx, 16
 mov bx, s_startupSecond
 call print_str
 mov bx, s_stage_start
 call print_str
-mov dx, $$
-call print_hex
+mov ax, $$
+call print_number
+call goToLine
 mov bx, s_stage_end
 call print_str
-mov dx, $$ + SECOND_STAGE_SIZE*512
-call print_hex
-
-call MainLoop
-
-;Just for fun, a simple keyboard typer :)
-MainLoop:
-    mov ah, 00h    ;BIOS.GetKey
-    int 16h
-    cmp al, 27     ;Is it ESCAPE ?
-    jne ProcessOtherKey
-    cmp al, 8
-    ;je ProcessBackKey
-ProcessEscapeKey:
-   jmp $$
-ProcessOtherKey:
-   mov ah, 0x0e
-   int 0x10
-   jmp MainLoop
-ProcessBackKey:
-   mov ah, 0x0e
-   mov al, 32
-   int 0x10
-   jmp MainLoop
-
+mov ax, $$ + SECOND_STAGE_SIZE*512
+call print_number
+call goToLine
+mov cx, 10
+mov bx, s_stage_size
+call print_str
+sub ax, $$
+call print_number
+mov bx, s_bytes
+call print_str
+call goToLine
 
 
 jmp $
