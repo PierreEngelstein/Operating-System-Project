@@ -22,7 +22,7 @@ sti                            ;Now that we are safe, we can re-enable the inter
 
 ;Now that's done, we can do whatever we want to.
 call clear_screen              ;We clear the screen from previous messages we did not needed
-;Some messages...
+;Some messages indicating information
 mov cx, 16
 mov bx, s_startupSecond
 call print_str
@@ -44,7 +44,6 @@ call print_number
 mov bx, s_bytes
 call print_str
 call goToLine
-
 
 jmp $
 
