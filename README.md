@@ -1,11 +1,11 @@
 # Operating System project #
 
-Main assembly + c project on creating a small kernel
+Main project on creating a bootloader & kernel using assembly and C.
 <br>
 Last modified : 04.08.2018
 
 ## Setting up the environment
-This project uses some external tools to be build up. Please install the following tools in order to compile & run the code :
+Install the following tools in order to compile & run the code :
 - nasm
   - Linux Debian : `apt-get install nasm`
   - Linux Fedora : `dnf install nasm`
@@ -15,12 +15,10 @@ This project uses some external tools to be build up. Please install the followi
 
 ## Compiling the source
 - Clone the repository on a location of your choice : `git clone https://github.com/PierreEngelstein/Operating-System-Project.git`
-- Run `~/.assemble.sh` (if the script can't run, make sure you have the permission to run it, otherwise do : `chmod +x ~/assemble.sh`).
+- Run `~/.assemble.sh`.
 - Run `qemu-system-i386 -hda bin/boot.bin` to run the bootloader.
 
-**NOTE**: The script is made with bash, so you can't run it with windows. If you want to build this project in Windows, you will have to execute each command by yourself, or code a windows-compatible script.
-
-## Project Road Map
+## Project Roadmap
 - [x] First stage Bootloader
   - [x] Setup segments and stack
   - [x] Read hard drive for second-stage Bootloader sectors
