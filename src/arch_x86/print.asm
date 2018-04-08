@@ -38,31 +38,31 @@ print_number:
    pusha
    mov bx, 0           ;Number of characters to be printed
    loop_number:
-      xor dx, dx
-      div cx
-      push dx
-      inc bx
-      cmp ax, 0
-      jne loop_number
-      je loop_print
+      xor dx, dx               ;The number read is dx:ax, but we don't need dx (we are still in 16 bit), so dx = 0
+      div cx                   ;(dx:ax)/cx
+      push dx                  ;Push the result so we are able to print it in order later
+      inc bx                   ;Increment the character counter
+      cmp ax, 0                ;If the quotient is 0, then we have finished to compute our number in base n
+      jne loop_number          ;Else, we continue the division
+      je loop_print            ;Then we can print the number
    loop_print:
-      pop dx
-      mov al, dl         ;We setup the number to be printed
-      cmp al, 0xa
-      jge loop_print_character
-      jl loop_print_number
+      pop dx                   ;Get the number to be printed
+      mov al, dl               ;We setup the number to be printed
+      cmp al, 0xa              ;If the number to be printed is not in [0-9], then we print a letter
+      jge loop_print_character ;Jump to print a character
+      jl loop_print_number     ;Jump to print a number
    loop_print_character:
-      add al, 55
-      jmp loop_print_continue
+      add al, 55               ;Add the printable ascci 'a'
+      jmp loop_print_continue  ;Continue over printing
    loop_print_number:
-      add al, '0'
-      jmp loop_print_continue
+      add al, '0'              ;Add the printable ascci '0'
+      jmp loop_print_continue  ;Continue over printing
    loop_print_continue:
-      mov ah, 0x0e
+      mov ah, 0x0e             ;Interrupt 10h, function 02h
       int 0x10
-      dec bx
-      cmp bx, 0
-      jne loop_print
+      dec bx                   ;We have printed our character, so we decrease the number counter
+      cmp bx, 0                ;If we have no number left, we can end this task
+      jne loop_print           ;Otherwise, we go to the next number
       je print_number_end
    print_number_end:
       ;We now print the base indicator if it is a binary, octal or hexadecimal
