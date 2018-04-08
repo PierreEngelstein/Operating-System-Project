@@ -1,6 +1,7 @@
 # Operating System project #
 
 Main assembly + c project on creating a small kernel
+Last modified : 04.08.2018
 
 ## Setting up the environment
 This project uses some external tools to be build up. Please install the following tools in order to compile & run the code :
