@@ -136,7 +136,7 @@ disk_load:
    ;dl = 0x00 if floppy disk 1, 0x01 if floppy disk 2, 0x80 if hdd 1, 0x81 if hdd2
    mov ch, 0x00      ;cylinder number [0x000 -> 0x3FF]
    int 0x13
-   jc errorDiskLoad
+   jc errorDiskLoad  ;Stop the program if there is an error (carry flag set)
    pop dx
    cmp al, dh
    jne errorDiskLoad ;We want to be sure that we read all the sectors we wanted
