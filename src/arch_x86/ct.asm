@@ -5,6 +5,7 @@
 ;Author : Pierre Engelstein
 ;-------------------------------------
 
-SECOND_STAGE_LOCATION   equ   0x8000
-SECOND_STAGE_SIZE       equ   50
-STACK_START_LOCATION    equ   0x14FF
+SECOND_STAGE_LOCATION      equ   0x8000
+SECOND_STAGE_SIZE          equ   2
+STACK_START_LOCATION       equ   0x14FF
+PROTECTED_STACK_LOCATION   equ   0x80000
