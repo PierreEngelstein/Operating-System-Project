@@ -21,7 +21,7 @@ mov ss, ax
 sti                            ;Now that we are safe, we can re-enable the interrupts
 
 ;Now that's done, we can do whatever we want to.
-;call clear_screen              ;We clear the screen from previous messages we did not needed
+call clear_screen              ;We clear the screen from previous messages we did not needed
 ;Some messages indicating information
 mov cx, 16
 mov bx, s_startupSecond
