@@ -36,7 +36,7 @@ print_str:
 ;
 print_number:
    pusha
-   mov bx, 0           ;Number of characters to be printed
+   mov bx, 0                   ;Number of characters to be printed
    loop_number:
       xor dx, dx               ;The number read is dx:ax, but we don't need dx (we are still in 16 bit), so dx = 0
       div cx                   ;(dx:ax)/cx
