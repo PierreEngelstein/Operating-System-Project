@@ -29,20 +29,20 @@ Description of the boot sequence of this little project
   - [ ] Jumps where the kernel was loaded (*To be coded*)
 
 ## Some algorithms in this project :
-#print_string routine
+###print_string routine
 ```python
 function print_str(char *str)
 {
   while(*str != 0)
   {
     al = *str;
-    printchar(al);  //Interrupt 0x10 with ah = 0x0e
-    al++;
+    printchar(al);  #Interrupt 0x10 with ah = 0x0e
+    al = al+1;
   }
 }
 ```
-#print_number routine
-#disk_load routine
-#GDT format
+####print_number routine
+####disk_load routine
+####GDT format
 ## Author
 Made by Pierre Engelstein
