@@ -29,7 +29,7 @@ Description of the boot sequence of this little project
   - [ ] Jumps where the kernel was loaded (*To be coded*)
 
 ## Some algorithms in this project :
-###print_string routine
+### print_string routine
 ```python
 function print_str(char *str)
 {
@@ -41,8 +41,18 @@ function print_str(char *str)
   }
 }
 ```
-####print_number routine
-####disk_load routine
-####GDT format
+#### print_number routine
+```python
+function print_number(base, number) #base in cx, number in dx
+{
+  charPrinted = 0;
+  do
+  {
+
+  }while()
+}
+```
+#### disk_load routine
+#### GDT format
 ## Author
 Made by Pierre Engelstein
