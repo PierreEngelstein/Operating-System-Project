@@ -26,7 +26,23 @@ Description of the boot sequence of this little project
   - [x] When in protected mode, setup (*again*) all the registers
   - [x] Setups the protected-mode stack location at `0x80000` (At the top of the bootloader free memory, to be sure we don't have any problems)
   - [x] Jumps to the core protected-mode code
-  - [x] Jumps where the kernel was loaded (*To be coded*)
+  - [ ] Jumps where the kernel was loaded (*To be coded*)
 
+## Some algorithms in this project :
+#print_string routine
+```python
+function print_str(char *str)
+{
+  while(*str != 0)
+  {
+    al = *str;
+    printchar(al);  //Interrupt 0x10 with ah = 0x0e
+    al++;
+  }
+}
+```
+#print_number routine
+#disk_load routine
+#GDT format
 ## Author
 Made by Pierre Engelstein
