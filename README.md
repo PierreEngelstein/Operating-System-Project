@@ -2,7 +2,7 @@
 
 Main project on creating a bootloader & kernel using assembly and C.
 <br>
-Last modified : 04.08.2018
+Last modified : 12.08.2018
 
 ## Setting up the environment
 Install the following tools in order to compile & run the code :
@@ -25,7 +25,7 @@ Install the following tools in order to compile & run the code :
   - [x] Jump to the second stage
 - [ ] Second stage bootloader
   - [x] Setup segments and stack
-  - [x] Read hard drive for Kernel sectors
+  - [ ] Read hard drive for Kernel sectors
   - [x] Enable A20 gate
   - [x] load GDT
   - [x] Switch to 32-bit protected mode
