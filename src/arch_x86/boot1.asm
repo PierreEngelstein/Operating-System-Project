@@ -74,6 +74,9 @@ skipa20:                   ;Else, we continue the road
 mov bx, s_a20_enabled
 call print_str
 
+;Load kernel into memory
+
+;Switch to protected mode
 call switch_to_pm
 
 jmp $
@@ -95,7 +98,7 @@ errora20:
 %include "src/arch_x86/switch_32.asm"
 ;-----------------------------------
 
-;Protected mode code
+;Protected mode code (Kernel loader)
 [bits 64]
 beginPM:
    jmp $
