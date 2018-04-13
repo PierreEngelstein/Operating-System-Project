@@ -25,7 +25,7 @@ print_str:
 
 ;Number printing routine
 ;Call with  :
-;             bx = base i which it must be printed
+;             cx = base i which it must be printed
 ;             dx = number to be printed
 ;return     :
 ;             nothing
