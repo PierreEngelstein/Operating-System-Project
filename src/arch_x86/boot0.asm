@@ -37,7 +37,7 @@ call print_str
 
 ;Load the bootloader into memory at address 0x8000
 mov bx, SECOND_STAGE_LOCATION
-mov dh, SECOND_STAGE_SIZE  ;We read 50 sectors (corresponding to the padding indicated in boot1.asm)
+mov dh, SECOND_STAGE_SIZE  ;We read 2 sectors (corresponding to the padding indicated in boot1.asm)
 mov cl, 0x02               ;We start reading after this first sector
 call disk_load
 
