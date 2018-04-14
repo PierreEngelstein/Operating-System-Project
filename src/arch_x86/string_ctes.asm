@@ -20,12 +20,15 @@ s_kernel_endread   db "Written kernel sectors at ", 0
 
 ;Error messages :
 s_a20error         db "Failed to enable A20 gate ! Error code is [ah] : ", 0
-s_diskreadError    db "Failed to read kernel sectors !", 10, 13, "  => [al = nb sectors read, ah = error code] : ", 0
+s_diskreadError    db "Failed to read kernel sectors !", 10, 13, 0
+s_diskCode         db "     => Error code : ", 0
+s_sectRead         db "     => Disk sector already written : ", 0
 ;-------------------------------------
 
 ;General messages :
 s_bytes            db " bytes ", 0
 s_KiB              db " KiB ", 0
 s_MiB              db " MiB", 0
-s_separator        db "***************************************+***************************************", 10, 13, 0
+s_hex              db "0x", 0
+s_separator        db "*******************************************************************************", 10, 13, 0
 ;-------------------------------------
