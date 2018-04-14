@@ -77,6 +77,7 @@ skipa20:                   ;Else, we continue the road
 mov bx, s_a20_enabled
 call print_str
 call goToLine
+
 ;Load kernel into memory
 mov bx, s_kernel_read
 call print_str
@@ -91,6 +92,7 @@ call print_str
 mov ax, KERNEL_LOCATION
 mov cx, 16
 call print_number
+
 
 ;Switch to protected mode
 call switch_to_pm
@@ -130,15 +132,28 @@ disk_load:
   jne errorDiskLoad ;We want to be sure that we read all the sectors we wanted
   popa
   ret
-;Disk load error
-errorDiskLoad:
-   mov bx, s_diskreadError
-   call print_str
-   mov dx, ax
-   mov cx, 16
-   call print_number
-   cli
-   jmp $
+  errorDiskLoad:
+     mov bx, s_diskreadError
+     call print_str
+     ;print error code
+     push ax
+     mov al, ah
+     and ax, 0x00FF
+     mov cx, 16
+     mov bx, s_diskCode
+     call print_str
+     call print_number
+     call goToLine
+     ;print number of sector already written
+     pop ax
+     and ax, 0x00FF
+     mov cx, 10
+     mov bx, s_sectRead
+     call print_str
+     call print_number
+     call goToLine
+     cli
+     jmp $
 ;----------Includes needed----------
 %include "src/arch_x86/print.asm"
 %include "src/arch_x86/string_ctes.asm"
