@@ -14,14 +14,18 @@ s_lowmem_size      db "Low memory size : ", 0
 s_a20_check        db "Checking A20 gate ...", 10, 13, 0
 s_a20_enabled      db "A20 gate enabled !", 10, 13, 0
 s_a20_disabled     db "A20 gate is disabled, jumping to enable it...", 10, 13, 0
+s_kernel_read      db "Reading kernel sectors ...", 10, 13, 0
+s_kernel_endread   db "Written kernel sectors at ", 0
 ;-------------------------------------
 
 ;Error messages :
 s_a20error         db "Failed to enable A20 gate ! Error code is [ah] : ", 0
+s_diskreadError    db "Failed to read kernel sectors !", 10, 13, "  => [al = nb sectors read, ah = error code] : ", 0
 ;-------------------------------------
 
 ;General messages :
 s_bytes            db " bytes ", 0
 s_KiB              db " KiB ", 0
 s_MiB              db " MiB", 0
+s_separator        db "***************************************+***************************************", 10, 13, 0
 ;-------------------------------------
