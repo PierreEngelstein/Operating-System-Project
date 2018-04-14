@@ -37,6 +37,11 @@ print_str:
 print_number:
    pusha
    mov bx, 0                   ;Number of characters to be printed
+   cmp cx, 16
+   jne loop_number
+   mov bx, s_hex
+   call print_str
+   mov bx, 0
    loop_number:
       xor dx, dx               ;The number read is dx:ax, but we don't need dx (we are still in 16 bit), so dx = 0
       div cx                   ;(dx:ax)/cx
@@ -70,8 +75,6 @@ print_number:
       je print_binary_indicator
       cmp cx, 8
       je print_octal_indicator
-      cmp cx, 16
-      je print_hexa_indicator
       jmp print_number_real_end
    print_binary_indicator:
       mov al, 'b'
@@ -81,9 +84,6 @@ print_number:
       mov al, 'o'
       int 0x10
       jmp print_number_real_end
-   print_hexa_indicator:
-      mov al, 'h'
-      int 0x10
    print_number_real_end:
       popa
       ret
