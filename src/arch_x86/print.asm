@@ -26,7 +26,7 @@ print_str:
 ;Number printing routine
 ;Call with  :
 ;             cx = base i which it must be printed
-;             dx = number to be printed
+;             ax = number to be printed
 ;return     :
 ;             nothing
 ;example : printing 0xdada in base 10 :
