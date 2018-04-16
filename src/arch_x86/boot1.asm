@@ -163,9 +163,10 @@ disk_load:
 ;-----------------------------------
 
 ;Protected mode code (Kernel loader)
-[bits 64]
+[bits 32]
 beginPM:
-   jmp $
+   ; jmp $
+   jmp KERNEL_LOCATION
 
 ;We make sure this file is exactly the size we want, given the size in ct.asm
 times (SECOND_STAGE_SIZE * 512 - 2) - ($ - $$) db 0
