@@ -18,7 +18,7 @@ Description of the boot sequence of this little project
   - [x] Prints some information about this stage (where is it loaded and where does it stops)
   - [x] Gets the low-memory size via BIOS interrupt (`int 0x12`) and prints it
   - [x] Checks if the A20 gate is enabled. If it is not, we enable it via BIOS interrupt (`int 0x15, ax = 0x2401`). Otherwise, we continue.
-  - [ ] Loads the kernel into memory (*To be coded*)
+  - [x] Loads the kernel into memory
   - [x] Switches to protected mode
     - [x] Loads the Global Descriptor Table
     - [x] Changes the protected-mode bit indicator (`cr0`)
@@ -26,7 +26,7 @@ Description of the boot sequence of this little project
   - [x] When in protected mode, setup (*again*) all the registers
   - [x] Setups the protected-mode stack location at `0x80000` (At the top of the bootloader free memory, to be sure we don't have any problems)
   - [x] Jumps to the core protected-mode code
-  - [ ] Jumps where the kernel was loaded (*To be coded*)
+  - [x] Jumps where the kernel was loaded  => ERROR (with memory ?)
 
 ## Some algorithms in this project :
 ### print_string routine
@@ -42,16 +42,6 @@ function print_str(char *str)
 }
 ```
 #### print_number routine
-```python
-function print_number(base, number) #base in cx, number in dx
-{
-  charPrinted = 0;
-  do
-  {
-
-  }while()
-}
-```
 #### disk_load routine
 #### GDT format
 ## Author
