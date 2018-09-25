@@ -23,7 +23,7 @@ int main()
     *video = 0x0f;
     video++;
   }
-  char str[6] = "hello";
+  char *str = "hello";
   write_str(str);
   while(1){};
   return 1;
