@@ -2,9 +2,6 @@
 #Main bootloader assembler
 #This script goes through the different bootloader's stages .asm files, assembling them
 #and creating the main bootloader image.
-#Author : Pierre Engelstein
-#Version : 2.1.0
-#Last modified : 06.04.2018
 #-------------------------------
 
 #!/bin/bash
