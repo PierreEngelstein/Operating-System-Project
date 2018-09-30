@@ -85,6 +85,7 @@ mov bx, KERNEL_LOCATION    ;Load the Kernel at 0x9000
 mov dh, KERNEL_SIZE        ;Read 2 sectors (for the moment it is static, will work to make it dynamic later)
 mov cl, 0x02               ;Start reading after this sector
 add cl, SECOND_STAGE_SIZE
+
 call disk_load
 
 mov bx, s_kernel_endread
