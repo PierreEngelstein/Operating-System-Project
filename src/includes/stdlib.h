@@ -17,3 +17,6 @@ void kprintf(const char *string, ...);
 void write_char(const char c, int col, int row);
 /* Updates the cursor to the given coordinates */
 void update_cursor(int col, int row);
+int getCursorOffet();
+int getOffsetRow(int offset);
+int getOffsetCol(int offset);
