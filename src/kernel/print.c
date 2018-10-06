@@ -33,7 +33,7 @@ void kprintf(const char *string, ...)
                     kprintf(buff);
                     break;
                   default:
-                    kprintf("%?");
+                    kprintf("$");
                     break;
                 }
             }else
@@ -70,4 +70,22 @@ void update_cursor(int col, int row)
     port_byte_out(REG_SCREEN_DATA, (uint8_t)(pos & 0xFF));
     port_byte_out(REG_SCREEN_CTRL, 0x0E);
     port_byte_out(REG_SCREEN_DATA, (uint8_t)((pos >> 8) & 0xFF));
+}
+
+int getCursorOffet()
+{
+  port_byte_out(REG_SCREEN_CTRL, 14);
+  int offset = port_byte_in(REG_SCREEN_DATA) << 8; /* High byte: << 8 */
+  port_byte_out(REG_SCREEN_CTRL, 15);
+  offset += port_byte_in(REG_SCREEN_DATA);
+return offset * 2; /* Position * size of character cell */
+}
+
+int getOffsetRow(int offset)
+{
+    return  offset / (2 * VGA_WIDTH);
+}
+int getOffsetCol(int offset)
+{
+    return (offset - (getOffsetRow(offset)*2*VGA_WIDTH))/2;
 }
