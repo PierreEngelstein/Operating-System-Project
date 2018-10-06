@@ -7,6 +7,7 @@ void itoa(int value, char* buffer, int base);
 char* reverse(char *buffer, int i, int j);
 /* Swaps the two strings */
 void swap(char *x, char *y);
+int abs(int n);
 
 /**
     Print routines
