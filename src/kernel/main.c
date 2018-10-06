@@ -50,23 +50,31 @@ void init_term()
 
 int main()
 {
-    init_pics(0x20, 0x28);
+    #define azerty
+    init_pics(0x20, 0x27);
     clear();
     kprintf("Started Kernel ...\n");
     kprintf("Initialising Kernel ...");
     init_term();
     kprintf("Finished!\n");
     int a = 123;
-    kprintf("a = %d\n", a);
-    char oldkey;
-char key;
-for (;;) {
-  oldkey=key;
-  key=port_byte_in(0x60);
-  if(!(oldkey==key)){
-    kprintf(key);
-  }
-}
+    kprintf("a = %x\n", a);
+    int oldkey;
+    int key;
+    struct Keyboard keyb = initKeyboard();
+    for (;;)
+    {
+        oldkey=key;
+        key=getKey();
+        if(!(oldkey==key)){
+          // kprintf("hexa=%x\n", abs(key), abs(key));
+          char c = keyToAscii(key, keyb);
+          if(c >= 32 && c <= 126 && c != 94)
+              kprintf("%c\0", keyToAscii(key, keyb));
+          else if(c == 13)
+              kprintf("\n");
+        }
+    }
     while(1){};
     return 1;
 }
