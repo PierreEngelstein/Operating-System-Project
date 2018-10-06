@@ -13,4 +13,4 @@ PROTECTED_STACK_LOCATION   equ   0x80000
 
 ;Kernel constants
 KERNEL_LOCATION            equ   0x9000    ;Where to load the kernel
-KERNEL_SIZE                equ   3        ;Kernel's size in sectors
+KERNEL_SIZE                equ   5        ;Kernel's size in sectors
