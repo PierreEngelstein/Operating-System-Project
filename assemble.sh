@@ -39,8 +39,8 @@ do
          #Add this element into the list of object files
          OBJLIST+=("$OBJ")
          #And compile it
-         echo "${blue}gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ{reset}"
-         gcc -ffreestanding -m32 -Isrc/includes -Wall -c $filename -o $OBJ
+         echo "${blue}gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ${reset}"
+         gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ
          #clang -S -O3 -fsyntax-only -ffreestanding -fsyntax-only -c $filename -o $OBJ
 done
 
