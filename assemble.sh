@@ -43,6 +43,22 @@ do
          gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ
          #clang -S -O3 -fsyntax-only -ffreestanding -fsyntax-only -c $filename -o $OBJ
 done
+#Drivers compilation
+echo "${yellow}[4] ${green}Compiling drivers${reset}"
+for filename in src/kernel/drivers/*.c;
+do
+         #Construct the name of the output file : src/kernel/something.c converted into bin/obj/something.o
+         FILELIST+=("$filename")
+         FILE="${filename##*/}"
+         FILE="${FILE%.*}"
+         OBJ="$OBJ_FILE$FILE$OUTPUT_EXT"
+         #Add this element into the list of object files
+         OBJLIST+=("$OBJ")
+         #And compile it
+         echo "${blue}gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ${reset}"
+         gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ
+         #clang -S -O3 -fsyntax-only -ffreestanding -fsyntax-only -c $filename -o $OBJ
+done
 
 #And now we can create the full bin image of the kernel
 echo "${yellow}[5] ${green}Creating kernel binary image${reset}"
