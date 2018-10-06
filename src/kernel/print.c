@@ -9,9 +9,9 @@ void kprintf(const char *string, ...)
     va_list parameters;
     va_start(parameters, string);
     int i = 0;
+    char c;
     /* All type fields */
     int d;
-    char c;
     while(string[i] != 0) /* Write all string until end_of_string character '\0' */
     {
         if(string[i] == '\n') /* New line => increase current row position */
@@ -26,15 +26,27 @@ void kprintf(const char *string, ...)
             {
                 i += 2;
                 switch (string[i-1]) {
-                  case 'd':       /* Output an int */
-                    d=va_arg(parameters, signed int);
-                    char *buff;
-                    itoa(d, buff, 10);
-                    kprintf(buff);
-                    break;
-                  default:
-                    kprintf("$");
-                    break;
+                    case 'd':       /* Output an int */
+                        d=va_arg(parameters, signed int);
+                        char *buffd;
+                        itoa(d, buffd, 10);
+                        kprintf(buffd);
+                        break;
+                    case 'x':       /* Output an hexadecimal */
+                        d=va_arg(parameters, signed int);
+                        char *buffx;
+                        itoa(d, buffx, 16);
+                        kprintf(buffx);
+                        break;
+                    case 'c':       /* Output an hexadecimal */
+                        d = va_arg(parameters, int);
+                        write_char(d, curr_col, curr_row);
+                        i++;
+                        curr_col++;
+                        break;
+                    default:
+                      kprintf("$");
+                      break;
                 }
             }else
             {
