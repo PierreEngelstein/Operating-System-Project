@@ -7,4 +7,4 @@ static const int VGA_MEM = 0xb8000;
 static int curr_row;
 static int curr_col;
 /* Current printing color */
-static int color;
+// static int color;
