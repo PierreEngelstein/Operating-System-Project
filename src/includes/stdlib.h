@@ -21,3 +21,8 @@ void update_cursor(int col, int row);
 int getCursorOffet();
 int getOffsetRow(int offset);
 int getOffsetCol(int offset);
+
+// #define sizeof(x) ((&x + 1) - &x)
+
+void kpanic(char *message);
+#define assert(check, condition) do{ if ((check) != (condition)) kpanic();}while(0)
