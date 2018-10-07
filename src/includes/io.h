@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "const.h"
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
 /* Reads an unsigned byte from the specified port */
@@ -11,6 +12,24 @@ unsigned short port_word_in(uint16_t port);
 void port_word_out(uint16_t port, uint16_t data);
 
 /* Special keycodes */
+/* Keypad */
+#define INSERT 400
+#define END   401
+#define DOWN  402
+#define PGDWN 403
+#define LEFT  404
+#define NP5   405
+#define RIGHT 406
+#define HOME  407
+#define UP    408
+#define PGUP  409
+#define DIV   47
+#define MULT  42
+#define MINUS '-'
+#define PLUS  '+'
+#define NUMLK 414
+#define DEL   415
+/* F1 -> F12 */
 #define F1  501
 #define F2  502
 #define F3  503
@@ -23,13 +42,15 @@ void port_word_out(uint16_t port, uint16_t data);
 #define F10 510
 #define F11 511
 #define F12 512
-#define NUMLK 513
+/* Special keys after F keys */
 #define SCRLK 514
-#define HOME  515
-#define UP    516
-#define PGUP  517
-#define ALT   518
-#define CTRL  519
+#define PRTSC 515
+#define PAUSE 516
+/* ALT- CTRL - CAPSLOCK Keys */
+#define ALT   517
+#define CTRL  518
+#define CPSLK 519
+/* SHIFT + F1 -> SHIFT + F12 */
 #define SHF1   521
 #define SHF2   522
 #define SHF3   523
@@ -44,12 +65,20 @@ void port_word_out(uint16_t port, uint16_t data);
 #define SHF12  532
 
 /* keyboard */
-struct Keyboard
+typedef struct Keyboard
 {
-    char buffer[10];
+    int *buffer;
+    unsigned int buf_size;
     char *map;
-    int isUpper;
-};
-int getKey();
-char keyToAscii(int raw_key, struct Keyboard keyboard);
+    /* Booleans => keyboard status */
+    int shift;
+    int cpslock;
+    int alt;
+    int ctrl;
+    int numlock;
+    int special;
+}kbd_t;
+int scan_keyboard();
+void kbd_interrupt(kbd_t * keyboard);
+int keyToAscii(int scancode, kbd_t * keyboard);
 struct Keyboard initKeyboard();
