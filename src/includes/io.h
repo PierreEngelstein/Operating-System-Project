@@ -28,7 +28,7 @@ typedef struct Keyboard
     int nbSpecial;
 }kbd_t;
 int scan_keyboard();
-int kbd_interrupt(kbd_t * keyboard);
+void kbd_interrupt(kbd_t * keyboard);
 void printBuffer(kbd_t * keyboard);
 int keyToAscii(int scancode, kbd_t * keyboard);
 struct Keyboard initKeyboard();
