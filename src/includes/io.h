@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "const.h"
+#include "keyboard.h"
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
 /* Reads an unsigned byte from the specified port */
@@ -11,60 +12,7 @@ unsigned short port_word_in(uint16_t port);
 /* Writes an unsigned short into the specified port  */
 void port_word_out(uint16_t port, uint16_t data);
 
-/* Special keycodes */
-/* Keypad */
-#define INSERT 400
-#define END   401
-#define DOWN  402
-#define PGDWN 403
-#define LEFT  404
-#define NP5   405
-#define RIGHT 406
-#define HOME  407
-#define UP    408
-#define PGUP  409
-#define DIV   47
-#define MULT  42
-#define MINUS '-'
-#define PLUS  '+'
-#define NUMLK 414
-#define DEL   415
-/* F1 -> F12 */
-#define F1  501
-#define F2  502
-#define F3  503
-#define F4  504
-#define F5  505
-#define F6  506
-#define F7  507
-#define F8  508
-#define F9  509
-#define F10 510
-#define F11 511
-#define F12 512
-/* Special keys after F keys */
-#define SCRLK 514
-#define PRTSC 515
-#define PAUSE 516
-/* ALT- CTRL - CAPSLOCK Keys */
-#define ALT   517
-#define CTRL  518
-#define CPSLK 519
-/* SHIFT + F1 -> SHIFT + F12 */
-#define SHF1   521
-#define SHF2   522
-#define SHF3   523
-#define SHF4   524
-#define SHF5   525
-#define SHF6   526
-#define SHF7   527
-#define SHF8   528
-#define SHF9   529
-#define SHF10  530
-#define SHF11  531
-#define SHF12  532
-
-/* keyboard */
+/* Keyboard */
 typedef struct Keyboard
 {
     int *buffer;
@@ -77,8 +25,33 @@ typedef struct Keyboard
     int ctrl;
     int numlock;
     int special;
+    int nbSpecial;
 }kbd_t;
 int scan_keyboard();
 void kbd_interrupt(kbd_t * keyboard);
 int keyToAscii(int scancode, kbd_t * keyboard);
 struct Keyboard initKeyboard();
+
+/* Console */
+/* Console default size */
+static const int VGA_WIDTH  = 80;
+static const int VGA_HEIGHT = 25;
+/* Video memory start address (NOT AN ARRAY)*/
+static const int VGA_MEM = 0xb8000;
+typedef struct
+{
+        kbd_t keyb;
+        int CONSOLE_WIDTH;
+        int CONSOLE_HEIGHT;
+        int curr_row;
+        int curr_col;
+        int key;
+        int oldKey;
+}Console;
+void console_init(); /* Main function */
+void printf(const char *str, ...);  /* To print something on screen */
+void scanf();   /* To get input from keyboard */
+void scroll_up(); /* To scroll up what is written on the console */
+void pause();   /* To pause the actual console */
+void console_clear();
+char getLastChar();

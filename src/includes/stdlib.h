@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include "io.h"
 /**
     String routines
 **/
@@ -13,7 +15,7 @@ int abs(int n);
     Print routines
 **/
 /* Prints a string and type fields */
-void kprintf(const char *string, ...);
+void kprintf(const char *string, va_list args, Console *tConsole);
 /* Prints the character at the given coordinates */
 void write_char(const char c, int col, int row);
 /* Updates the cursor to the given coordinates */

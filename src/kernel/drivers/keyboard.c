@@ -1,4 +1,3 @@
-#include "io.h"
 #include "stdlib.h"
 #include "const.h"
 /* Keyboard driver */
@@ -56,7 +55,7 @@ void kbd_interrupt(kbd_t * keyboard) /* Process the keyboard interrupt by puttin
 
 int keyToAscii(int scancode, kbd_t * keyboard)
 {
-        int result;
+        int result = NONE;
         if(scancode < 0x60) /* If the scancode is something mapped in the keycodes array, process it */
         {
                 if(keyboard->cpslock ^ keyboard->shift) /* If the keyboard is on shift or shift verr */
@@ -81,11 +80,64 @@ int keyToAscii(int scancode, kbd_t * keyboard)
         }
         else /* Otherwise, it means that it is a released key */
         {
-                if(scancode - 128 == 0x2A) /* Shift released */
-                        keyboard->shift = FALSE;
-                if(scancode - 128 == 0x1D) /* ctrl released */
-                        keyboard->ctrl = FALSE;
+                if(!keyboard->special)
+                {
+                        if(scancode - 128 == 0x2A) /* Shift released */
+                                keyboard->shift = FALSE;
+                        if(scancode - 128 == 0x1D) /* ctrl released */
+                                keyboard->ctrl = FALSE;
+                }
+                else
+                {
+                        switch (result) {
+                                case 0x48:
+                                        printf("KEY_UP\n");
+                                        result = KEY_UP_PRESS;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0xC8:
+                                        result = KEY_UP_RELEASE;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0x4B:
+                                        result = KEY_LEFT_PRESS;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0xCB:
+                                        result = KEY_LEFT_RELEASE;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0x4D:
+                                        result = KEY_RIGHT_PRESS;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0xCD:
+                                        result = KEY_RIGHT_RELEASE;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0x50:
+                                        result = KEY_DOWN_PRESS;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                case 0xD0:
+                                        result = KEY_DOWN_RELEASE;
+                                        keyboard->nbSpecial++;
+                                        keyboard->special = !keyboard->special;
+                                        break;
+                                default:
+                                        result = -1;
+                                        break;
+                        }
+                }
         }
+        // kprintf("%d\n", result);
         return result;
 }
 
@@ -99,6 +151,8 @@ kbd_t initKeyboard()
         keyboard.alt = FALSE;
         keyboard.ctrl = FALSE;
         keyboard.numlock = FALSE;
+        keyboard.special = FALSE;
+        keyboard.nbSpecial = 0;
         int kb;
         for(kb = 0; kb < keyboard.buf_size; kb++) /* Init the keyboard buffer with 0 */
                 keyboard.buffer[kb] = 0;

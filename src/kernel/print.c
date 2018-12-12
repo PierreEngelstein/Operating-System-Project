@@ -1,13 +1,7 @@
 #include "stdlib.h"
-#include "console.h"
-#include "io.h"
-#include <stdarg.h>
-
-void kprintf(const char *string, ...)
+void kprintf(const char *string, va_list args, Console *tConsole)
 {
         /* First step : get all the optional parameters (using stdarg header) */
-        va_list parameters;
-        va_start(parameters, string);
         int i = 0;
         /* All type fields */
         int d;
@@ -15,8 +9,8 @@ void kprintf(const char *string, ...)
         {
                 if(string[i] == '\n') /* New line => increase current row position */
                 {
-                        curr_row++;
-                        curr_col = 0;
+                        tConsole->curr_row++;
+                        tConsole->curr_col = 0;
                         i++;
                 }else
                 {
@@ -26,42 +20,41 @@ void kprintf(const char *string, ...)
                                 i += 2;
                                 switch (string[i-1]) {
                                 case 'd': /* Output an int */
-                                        d=va_arg(parameters, signed int);
-                                        char *buffd;
+                                        d=va_arg(args, signed int);
+                                        char *buffd = NULL;
                                         itoa(d, buffd, 10);
-                                        kprintf(buffd);
+                                        kprintf(buffd, args, tConsole);
                                         break;
                                 case 'x': /* Output an hexadecimal */
-                                        d=va_arg(parameters, signed int);
-                                        char *buffx;
+                                        d=va_arg(args, signed int);
+                                        char *buffx =NULL;
                                         itoa(d, buffx, 16);
-                                        kprintf(buffx);
+                                        kprintf(buffx, args, tConsole);
                                         break;
                                 case 'c': /* Output an hexadecimal */
-                                        d = va_arg(parameters, int);
-                                        write_char(d, curr_col, curr_row);
+                                        d = va_arg(args, int);
+                                        write_char(d, tConsole->curr_col, tConsole->curr_row);
                                         i++;
-                                        curr_col++;
+                                        tConsole->curr_col++;
                                         break;
                                 default:
-                                        kprintf("$");
+                                        kprintf("$", args, tConsole);
                                         break;
                                 }
                         }else
                         {
-                                write_char(string[i], curr_col, curr_row);
+                                write_char(string[i], tConsole->curr_col, tConsole->curr_row);
                                 i++;
-                                curr_col++;
+                                tConsole->curr_col++;
                         }
-                        if(curr_col == VGA_WIDTH) /* If we are at the end of the line, we go to the next line */
+                        if(tConsole->curr_col == VGA_WIDTH) /* If we are at the end of the line, we go to the next line */
                         {
-                                curr_col = 0;
-                                curr_row++;
+                                tConsole->curr_col = 0;
+                                tConsole->curr_row++;
                         }
                 }
         }
-        update_cursor(curr_col, curr_row);
-        va_end(parameters);
+        update_cursor(tConsole->curr_col, tConsole->curr_row);
 }
 
 void write_char(const char c, int col, int row)
@@ -85,10 +78,10 @@ void update_cursor(int col, int row)
 
 int getCursorOffet()
 {
-        port_byte_out(REG_SCREEN_CTRL, 14);
-        int offset = port_byte_in(REG_SCREEN_DATA) << 8; /* High byte: << 8 */
-        port_byte_out(REG_SCREEN_CTRL, 15);
-        offset += port_byte_in(REG_SCREEN_DATA);
+        port_word_out(REG_SCREEN_CTRL, 14);
+        int offset = port_word_in(REG_SCREEN_DATA) << 8; /* High byte: << 8 */
+        port_word_out(REG_SCREEN_CTRL, 15);
+        offset += port_word_in(REG_SCREEN_DATA);
         return offset * 2; /* Position * size of character cell */
 }
 
