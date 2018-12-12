@@ -42,7 +42,4 @@ int main()
                         printf("Got an a\nExiting ...");
                         break;
                 }
-        }
-        while(1) {};
-        return 1;
-}
+        
