@@ -60,3 +60,24 @@
 #define SHF10  530
 #define SHF11  531
 #define SHF12  532
+
+/* Keyboard */
+typedef struct Keyboard
+{
+    int *buffer;
+    unsigned int buf_size;
+    char *map;
+    /* Booleans => keyboard status */
+    int shift;
+    int cpslock;
+    int alt;
+    int ctrl;
+    int numlock;
+    int special;
+    int nbSpecial;
+}kbd_t;
+int scan_keyboard();
+void kbd_interrupt(kbd_t * keyboard);
+void printBuffer(kbd_t * keyboard);
+int keyToAscii(int scancode, kbd_t * keyboard);
+struct Keyboard initKeyboard();
