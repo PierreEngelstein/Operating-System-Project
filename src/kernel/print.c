@@ -1,4 +1,4 @@
-#include "stdlib.h"
+#include "lib.h"
 void kprintf(const char *string, va_list args, Console *tConsole)
 {
         /* First step : get all the optional parameters (using stdarg header) */

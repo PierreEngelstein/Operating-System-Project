@@ -1,7 +1,7 @@
-#include "stdlib.h"
+#include "lib.h"
 
 void kpanic(char *message)
 {
-    // kprintf(message);
+    printf(message);
     for(;;){} //Stand by and do nothing else
 }

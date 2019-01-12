@@ -1,15 +1,31 @@
 #include <stdarg.h>
 #include "io.h"
-/**
-    String routines
-**/
+#include "maths.h"
+
+/** Some standard defines **/
+#ifndef NULL
+#define NULL 0
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#undef BOOL
+typedef int BOOL;
+
 /* Convert an integer to a string */
 void itoa(int value, char* buffer, int base);
 /* Reverses the string array given in argument */
 char* reverse(char *buffer, int i, int j);
 /* Swaps the two strings */
 void swap(char *x, char *y);
-int abs(int n);
+/* Compares 2 strings */
+int strcmp(const char* p1, const char* p2);
 
 /**
     Print routines

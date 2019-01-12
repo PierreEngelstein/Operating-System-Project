@@ -1,6 +1,6 @@
 /* Console driver */
 /* routines : print, get input(with echoing or not), basic commands (e.g. : man/help), scroll up / down */
-#include "stdlib.h"
+#include "lib.h"
 #include <stdarg.h>
 
 static Console tConsole;
@@ -26,7 +26,7 @@ void printf(const char *str, ...)
         va_end(parameters);
 }
 /* Processes the input by keyboard */
-void scanf()
+char scanf()
 {
         tConsole.oldKey = tConsole.key;
         tConsole.key = scan_keyboard();
@@ -37,7 +37,7 @@ void scanf()
                 {
                         if(c >= 32 && c <= 126 && c != 94)
                                 printf("%c\0", c);
-                        else if(c == 13)
+                        else if(c == '\n')
                                 printf("\n");
                         else{
                         }
@@ -45,12 +45,21 @@ void scanf()
                 {
                         printf("%d\n", c);
                 }
+                return c;
         }
+        return 0;
 }
 
 char getLastChar()
 {
-        return keyToAscii(abs(tConsole.key), &tConsole.keyb);
+        char lastChar = keyToAscii(abs(tConsole.key), &tConsole.keyb);
+        return lastChar;
+}
+
+void clean()
+{
+        tConsole.key = 0;
+        tConsole.oldKey = 0;
 }
 
 void scroll_up()
