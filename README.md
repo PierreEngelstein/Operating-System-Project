@@ -29,7 +29,7 @@ Install the following tools in order to compile & run the code :
   - [x] Enable A20 gate
   - [x] load GDT
   - [x] Switch to 32-bit protected mode
-  - [ ] begin Kernel execution
+  - [x] begin Kernel execution
 - [ ] Kernel (*To be defined*)
 
 ## Author
