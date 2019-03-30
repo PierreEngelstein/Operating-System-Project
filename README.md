@@ -30,7 +30,7 @@ Install the following tools in order to compile & run the code :
   - [x] load GDT
   - [x] Switch to 32-bit protected mode
   - [x] begin Kernel execution
-- [X] Kernel (*To be defined*)
+- [] Kernel (*To be defined*)
   - [x] Load IDT
   - [ ] Keyboard driver
   - [ ] Shell
