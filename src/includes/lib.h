@@ -16,7 +16,7 @@
 #endif
 
 #undef BOOL
-typedef int BOOL;
+typedef short BOOL;
 
 /* Convert an integer to a string */
 void itoa(int value, char* buffer, int base);
@@ -66,3 +66,15 @@ int circular_buff_empty(cbuf_handle_t cbuf); /* Check if the circular buffer is 
 int circular_buff_full(cbuf_handle_t cbuf); /* Checks if the circular buffer is full */
 int circular_buff_capacity(cbuf_handle_t cbuf); /* Returns the max capacity of the buffer */
 int circular_buff_size(cbuf_handle_t cbuf); /* Returns the current number of elements in the buffer */
+
+/* Interrupts */
+typedef struct //8 bytes length
+{
+        unsigned short int offset_lowerbits; //Offset bits 0..15
+        unsigned short int selector; //A code segment selector in GDT or LDT
+        unsigned char zero; //Unused
+        unsigned char type_attr; //Type and attributes
+        unsigned short int offset_higherbits; //Offset bits 16..31
+}IDT_Entry;
+int idt_init();
+int createIDTEntry(IDT_Entry *entry, unsigned long irq_address);

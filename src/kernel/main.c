@@ -43,20 +43,39 @@ char *fgets(char *dest, int max)
 
 int main()
 {
-        init_pics(0x20, 0x27);
+        //init_pics(0x20, 0x27);
+        idt_init();
         /* Initialize the console */
         console_init();
         /* Print some random thing on screen to test */
         printf("Started Kernel ...\n");
-        printf("Testing number %d\n\0", 123);
+        printf("Testing number %d\n", 123);
+
         printf("Start inputing things on keyboard :\n");
+        
+        // IDT_Entry *IDT;
+        // printf("\nsizeof(IDT_Entry) = %d\n", sizeof(unsigned char));
+        // IDT = 0x7000;
+        // extern int irq0();
+        // extern int irq2();
+        // unsigned long irq0_address = (unsigned long)irq0;
+        // unsigned long irq2_address = (unsigned long)irq2;
+        // createIDTEntry(&(IDT[47]), irq2_address);
+        // printf("address of IDT[0] : %x\n", &(IDT[47]));
+        // printf("IDT[0].offset_higherbits = %x\n", IDT[47].offset_higherbits);
+        // printf("IDT[0].offset_lowerbits = %x\n", IDT[47].offset_lowerbits);
+        // printf("IDT[0].selector = %x\n", IDT[47].selector);
+        // printf("IDT[0].type_attr = %x", IDT[47].type_attr);
+
         /* Test the keyboard input */
-        int lgMax = 128;
-        char cmd[lgMax];
-        cmd[0] = '\0';
-        for(;;)
-        {
-                fgets(cmd, lgMax);
-        }
+        // int lgMax = 128;
+        // char cmd[lgMax];
+        // cmd[0] = '\0';
+        // for(;;)
+        // {
+        //         fgets(cmd, lgMax);
+        // }
+        // printf("Hello World !");
+        for(;;){}
         return 0;
 }
