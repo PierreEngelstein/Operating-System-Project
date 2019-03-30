@@ -1,2 +1,0 @@
-floppya: 1_44=bin/boot.bin , status=inserted
-boot: floppy

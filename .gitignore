@@ -1,7 +1,6 @@
-
-*.bin
 *.vscode
 *.o
+.directory
 build
 bin
 obj

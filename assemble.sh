@@ -44,7 +44,7 @@ do
          #clang -S -O3 -fsyntax-only -ffreestanding -fsyntax-only -c $filename -o $OBJ
 done
 #Drivers compilation
-echo "${yellow}[4] ${green}Compiling drivers${reset}"
+echo "${yellow}[5] ${green}Compiling drivers${reset}"
 for filename in src/kernel/drivers/*.c;
 do
          #Construct the name of the output file : src/kernel/something.c converted into bin/obj/something.o
@@ -61,13 +61,18 @@ do
 done
 
 #And now we can create the full bin image of the kernel
-echo "${yellow}[5] ${green}Creating kernel binary image${reset}"
+echo "${yellow}[6] ${green}Creating kernel binary image${reset}"
 echo "${blue}ld -Ttext 0x9000 ${OBJLIST[@]} -m elf_i386 -s -o bin/kernel.bin --oformat binary${reset}"
 ld -Ttext 0x9000 ${OBJLIST[@]} -m elf_i386 -s -o bin/kernel.bin --oformat binary
 ker_size=$(stat --printf="%s\n" bin/kernel.bin)
 sec_size=512
 ker_sect=$((ker_size%512?ker_size/512+1:ker_size/512))
 echo "${green}Kernel Size = $ker_size bytes => $ker_sect sectors to read"
-echo "${yellow}[6] ${green}Creating hard drive image${reset}                           ... ${blue}cat bin/boot0.bin bin/boot1.bin bin/kernel.bin > bin/boot.bin${reset}"
+echo "${yellow}[7] ${green}Creating hard drive image${reset}${blue}"
+echo "${blue}cat bin/boot0.bin bin/boot1.bin bin/kernel.bin > bin/boot.bin${reset}"
 cat bin/boot0.bin bin/boot1.bin bin/kernel.bin > bin/boot.bin
+echo "${blue}mv bin/boot.bin os.bin${reset}"
+mv bin/boot.bin os.bin
+echo "${blue}rm -rf bin/${reset}"
+rm -rf bin/
 echo "**********"
