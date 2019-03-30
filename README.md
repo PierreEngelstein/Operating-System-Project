@@ -23,7 +23,7 @@ Install the following tools in order to compile & run the code :
   - [x] Setup segments and stack
   - [x] Read hard drive for second-stage Bootloader sectors
   - [x] Jump to the second stage
-- [ ] Second stage bootloader
+- [x] Second stage bootloader
   - [x] Setup segments and stack
   - [x] Read hard drive for Kernel sectors
   - [x] Enable A20 gate
