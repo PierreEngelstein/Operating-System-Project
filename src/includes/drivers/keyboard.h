@@ -1,3 +1,5 @@
+/* Keyboard scan port */
+#define KEYBOARD_SCAN_PORT 0x60
 /* Special keycodes */
 #define NONE 0
 /* Arrows */
