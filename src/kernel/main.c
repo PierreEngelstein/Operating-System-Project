@@ -43,7 +43,7 @@ char *fgets(char *dest, int max)
 
 int main()
 {
-        //init_pics(0x20, 0x27);
+        init_pics(0x20, 0x27);
         idt_init();
         /* Initialize the console */
         console_init();
