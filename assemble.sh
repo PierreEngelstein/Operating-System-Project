@@ -40,7 +40,7 @@ do
          OBJLIST+=("$OBJ")
          #And compile it
          echo "${blue}gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ${reset}"
-         gcc -ffreestanding -fno-pie -m32 -Isrc/includes -Wall -c $filename -o $OBJ
+         gcc -ffreestanding -fno-pie -m32 -Wall -Isrc/includes -c $filename -o $OBJ
          #clang -S -O3 -fsyntax-only -ffreestanding -fsyntax-only -c $filename -o $OBJ
 done
 #Drivers compilation
@@ -62,8 +62,8 @@ done
 
 #And now we can create the full bin image of the kernel
 echo "${yellow}[6] ${green}Creating kernel binary image${reset}"
-echo "${blue}ld -Ttext 0x9000 ${OBJLIST[@]} -m elf_i386 -s -o bin/kernel.bin --oformat binary${reset}"
-ld -Ttext 0x9000 ${OBJLIST[@]} -m elf_i386 -s -o bin/kernel.bin --oformat binary
+echo "${blue}ld -Ttext 0x9000 -m elf_i386 -s --oformat binary ${OBJLIST[@]} -o bin/kernel.bin${reset}"
+ld -Ttext 0x9000 -m elf_i386 -s --oformat binary ${OBJLIST[@]} -o bin/kernel.bin
 ker_size=$(stat --printf="%s\n" bin/kernel.bin)
 sec_size=512
 ker_sect=$((ker_size%512?ker_size/512+1:ker_size/512))
