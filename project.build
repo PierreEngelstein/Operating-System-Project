@@ -1,0 +1,27 @@
+[config]
+delete_on_termination=True
+build_options=-ffreestanding -fno-pie -m32 -Wall
+linker_options=-Ttext 0x9000 -m elf_i386 -s --oformat binary
+bin_folder=bin/
+includes=src/includes
+main_output=os.bin
+output_kernel=kernel.bin
+
+[arch_x86]
+src/arch_x86/boot0.asm => boot0.bin
+src/arch_x86/boot1.asm => boot1.bin
+
+[kernel]
+src/kernel/entry.asm => entry.o
+src/kernel/io.c => io.o
+src/kernel/main.c => main.o
+src/kernel/maths.c => maths.o
+src/kernel/memory.c => memory.o
+src/kernel/panic.c => panic.o
+src/kernel/print.c => print.o
+src/kernel/String.c => string.o
+
+[drivers]
+src/kernel/drivers/console.c => console.o
+src/kernel/drivers/interrupts.c => interrupts.o
+src/kernel/drivers/keyboard.c => keyboard.o
