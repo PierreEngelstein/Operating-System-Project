@@ -1,6 +1,5 @@
 *.vscode
 *.o
 .directory
-build
 bin
 obj
