@@ -11,7 +11,7 @@ output_kernel=kernel.bin
 src/arch_x86/boot0.asm => boot0.bin
 src/arch_x86/boot1.asm => boot1.bin
 
-[kernel]
+[kernel] => kernel.bin
 src/kernel/entry.asm => entry.o
 src/kernel/io.c => io.o
 src/kernel/main.c => main.o
@@ -21,7 +21,7 @@ src/kernel/panic.c => panic.o
 src/kernel/print.c => print.o
 src/kernel/String.c => string.o
 
-[drivers]
+[drivers] => kernel.bin
 src/kernel/drivers/console.c => console.o
 src/kernel/drivers/interrupts.c => interrupts.o
 src/kernel/drivers/keyboard.c => keyboard.o
