@@ -16,7 +16,7 @@
 #endif
 
 #undef BOOL
-typedef short BOOL;
+typedef char BOOL;
 
 /* Convert an integer to a string */
 void itoa(int value, char* buffer, int base);
@@ -26,6 +26,8 @@ char* reverse(char *buffer, int i, int j);
 void swap(char *x, char *y);
 /* Compares 2 strings */
 int strcmp(const char* p1, const char* p2);
+const char *strstr(const char *str1, const char *str2);
+BOOL strstart(const char *str1, const char *str2);
 
 /**
     Print routines
@@ -78,3 +80,8 @@ typedef struct //8 bytes length
 }IDT_Entry;
 int idt_init();
 int createIDTEntry(IDT_Entry *entry, unsigned long irq_address);
+/* Disable all interrupts */
+void cli();
+/* Enable all interrupts */
+void sei();
+Console tConsole;
