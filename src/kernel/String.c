@@ -64,3 +64,45 @@ int strcmp(const char* p1, const char* p2)
         } while(c1 == c2);
         return c1-c2;
 }
+
+int strlen(const char *str)
+{
+    int l = 0;
+    while(*str)
+    {
+        l++;
+        str++;
+    }
+    return l;
+}
+
+const char *strstr(const char *str1, const char *str2)
+{
+    int i = 0, j = 0;
+    while(str1[i] != '\0' && str2[j] != '\0')
+    {
+        if(str2[j] == str1[i])
+        {
+            j++;
+        }
+        else
+        {
+            i = i - j;
+            j = 0;
+        }
+        i++;
+    }
+    if(str2[j] == '\0')
+    {
+        return &str1[i - j];
+    }
+    else
+    {
+        return (NULL);
+    }
+}
+
+BOOL strstart(const char *str1, const char *str2)
+{
+    return strstr(str1, str2) == str1;
+}
