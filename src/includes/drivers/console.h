@@ -12,13 +12,12 @@ typedef struct
         int CONSOLE_HEIGHT;
         int curr_row;
         int curr_col;
-        int key;
-        int oldKey;
+        char line[128];
+        int line_length;
 }Console;
 void console_init(); /* Main function */
 void printf(const char *str, ...);  /* To print something on screen */
-char scanf();   /* To get input from keyboard */
+void do_keyboard_interrupt();   /* To get input from keyboard */
 void scroll_up(); /* To scroll up what is written on the console */
 void pause();   /* To pause the actual console */
 void console_clear();
-char getLastChar();

@@ -42,17 +42,6 @@ int scan_keyboard() /* Get the input from 0x60 port (PRIVATE function -> don't a
         return port_byte_in(0x60);
 }
 
-void kbd_interrupt(kbd_t * keyboard) /* Process the keyboard interrupt by putting it in the keyboard buffer */
-{
-        int scancode;
-        scancode = scan_keyboard(); /* Get the scancode from keycode */
-        /* Manage the FIFO Buffer */
-        int kb;
-        for(kb = 0; kb < keyboard->buf_size - 1; kb++) /* Move each element upward */
-                keyboard->buffer[kb] = keyboard->buffer[kb + 1];
-        keyboard->buffer[keyboard->buf_size-1] = scancode; /* Store scan code */
-}
-
 int keyToAscii(int scancode, kbd_t * keyboard)
 {
         int result = NONE;

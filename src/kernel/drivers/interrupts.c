@@ -11,6 +11,8 @@ IDT_Entry *IDT;
 #define PIC2_DATA (PIC2 + 1)
 #define END_OF_INTERRUPT 0x20
 
+typedef int (*irq)();
+
 /* Creates a new IDT Entry struct */
 int createIDTEntry(IDT_Entry *entry, unsigned long irq_address)
 {
@@ -32,47 +34,63 @@ int createEmptyIDTEntry(IDT_Entry *entry)
         return 0;
 }
 
+void cli()
+{
+        port_byte_out(PIC1_DATA,0xff); // 1111 1111 => no interrupt enabled on PIC1
+        port_byte_out(PIC2_DATA,0xff); // 1111 1111 => no interrupt enabled on PIC2
+}
+void sei()
+{
+        port_byte_out(PIC1_DATA,0x00); // 0000 0000 => no interrupt enabled on PIC1
+        port_byte_out(PIC2_DATA,0x00); // 0000 0000 => no interrupt enabled on PIC2
+}
+
+extern int load_idt();
+extern int irq0();
+extern int irq1();
+extern int irq2();
+extern int irq3();
+extern int irq4();
+extern int irq5();
+extern int irq6();
+extern int irq7();
+extern int irq8();
+extern int irq9();
+extern int irq10();
+extern int irq11();
+extern int irq12();
+extern int irq13();
+extern int irq14();
+extern int irq15();
+
 /* Initializes the IDT */
 int idt_init()
 {
+        IDT = 0x4000; //For the moment mapped statically
         /* Clear out the entire IDT */
         for(int i = 0; i < 256 * sizeof(IDT_Entry); i++)
                 createEmptyIDTEntry(&IDT[i]);
-        IDT = 0x6000; //For the moment mapped statically
-        extern int load_idt();
-        extern int irq0();
-        extern int irq1();
-        extern int irq2();
-        extern int irq3();
-        extern int irq4();
-        extern int irq5();
-        extern int irq6();
-        extern int irq7();
-        extern int irq8();
-        extern int irq9();
-        extern int irq10();
-        extern int irq11();
-        extern int irq12();
-        extern int irq13();
-        extern int irq14();
-        extern int irq15();
 
-        unsigned long irq0_address = (unsigned long)irq0;
-        unsigned long irq1_address = (unsigned long)irq1;
-        unsigned long irq2_address = (unsigned long)irq2;
-        unsigned long irq3_address = (unsigned long)irq3;
-        unsigned long irq4_address = (unsigned long)irq4;
-        unsigned long irq5_address = (unsigned long)irq5;
-        unsigned long irq6_address = (unsigned long)irq6;
-        unsigned long irq7_address = (unsigned long)irq7;
-        unsigned long irq8_address = (unsigned long)irq8;
-        unsigned long irq9_address = (unsigned long)irq9;
-        unsigned long irq10_address = (unsigned long)irq10;
-        unsigned long irq11_address = (unsigned long)irq11;
-        unsigned long irq12_address = (unsigned long)irq12;
-        unsigned long irq13_address = (unsigned long)irq13;
-        unsigned long irq14_address = (unsigned long)irq14;
-        unsigned long irq15_address = (unsigned long)irq15;
+        irq irqs[17] =
+        {
+                &irq0,
+                &irq1,
+                &irq2,
+                &irq3,
+                &irq4,
+                &irq4,
+                &irq5,
+                &irq6,
+                &irq7,
+                &irq8,
+                &irq9,
+                &irq10,
+                &irq11,
+                &irq12,
+                &irq13,
+                &irq14,
+                &irq15
+        };
         unsigned long idt_address = (unsigned long)IDT;
         unsigned long idt_ptr[2];
 
@@ -94,26 +112,15 @@ int idt_init()
         port_byte_out(PIC1_DATA, 0x01);
         port_byte_out(PIC2_DATA, 0x01);
         /* Mask every interrupt except for keyboard interrupt */
-        port_byte_out(PIC1_DATA,0xfd);
-        port_byte_out(PIC2_DATA,0xff);
+        port_byte_out(PIC1_DATA,0xfd); // 1111 1101 => only keyboard interrupt enabled on PIC1
+        port_byte_out(PIC2_DATA,0xff); // 1111 1111 => no interrupt enabled on PIC2
 
         //IRQs (TODO : CPU exceptions and syscalls)
-        createIDTEntry(&(IDT[32]), irq0_address);
-        createIDTEntry(&(IDT[33]), irq1_address);
-        createIDTEntry(&(IDT[34]), irq2_address);
-        createIDTEntry(&(IDT[35]), irq3_address);
-        createIDTEntry(&(IDT[36]), irq4_address);
-        createIDTEntry(&(IDT[37]), irq5_address);
-        createIDTEntry(&(IDT[38]), irq6_address);
-        createIDTEntry(&(IDT[39]), irq7_address);
-        createIDTEntry(&(IDT[40]), irq8_address);
-        createIDTEntry(&(IDT[41]), irq9_address);
-        createIDTEntry(&(IDT[42]), irq10_address);
-        createIDTEntry(&(IDT[43]), irq11_address);
-        createIDTEntry(&(IDT[44]), irq12_address);
-        createIDTEntry(&(IDT[45]), irq13_address);
-        createIDTEntry(&(IDT[46]), irq14_address);
-        createIDTEntry(&(IDT[47]), irq15_address);
+        for(int i = 0; i < 16; i++)
+        {
+                createIDTEntry(&(IDT[i + 32]), (unsigned long)irqs[i]);
+                printf("%d\n", (i + 32));
+        }
 
         load_idt(idt_ptr);
         return 0;
@@ -127,7 +134,8 @@ void irq0_handler(void) /* Timer interrupt */
 }
 void irq1_handler(void) /* Keyboard interrupt */
 {
-        printf("%d", port_byte_in(KEYBOARD_SCAN_PORT));
+        do_keyboard_interrupt();
+        // printf("%d", port_byte_in(KEYBOARD_SCAN_PORT));
         port_byte_out(PIC1_COMM, END_OF_INTERRUPT);
 }
 void irq2_handler(void) /* Cascade (never raised) */
@@ -176,7 +184,7 @@ void irq11_handler(void) /* Free for peripherals / SCSI / NIC */
 }
 void irq12_handler(void) /* PS2 Mouse */
 {
-        printf("Mouse !");
+        // printf("Mouse !");
         port_byte_out(PIC2_COMM, END_OF_INTERRUPT);
         port_byte_out(PIC1_COMM, END_OF_INTERRUPT);
 }

@@ -3,7 +3,58 @@
 #include "lib.h"
 #include <stdarg.h>
 
-static Console tConsole;
+void clear_buffer()
+{
+        tConsole.line_length = 0;
+        tConsole.line[0] = 0;
+}
+
+void do_command()
+{
+        /* Parse commands */
+        if(strstart(tConsole.line, "clear")) //if starts with 'clear'
+        {
+                console_init();
+        }else if (strstart(tConsole.line, "uname"))
+        {
+                printf("\ncustom kernel v0.01");
+        }else if(strstart(tConsole.line, "help"))
+        {
+                printf("\nList of all commands :\n");
+                printf("CLEAR       Clears the console\n");
+                printf("HELP        Prints this help message\n");
+                printf("SHUTDOWN    Shutdowns the computer\n");
+                printf("UNAME       Prints the name of the system\n");
+        }else if(strstart(tConsole.line, "shutdown"))
+        {
+                port_word_out(0x604, 0x2000); //Qemu-specific :-)
+                printf("\nha, not implemented !");
+        }
+        else
+        {
+                if(tConsole.line_length != 0)
+                {
+                        printf("\n");
+                        printf(tConsole.line);
+                        printf(" : command not found !");
+                }
+        }
+        clear_buffer();
+        printf("\n:\\>");
+}
+
+void go_back()
+{
+        if(tConsole.curr_col > 3)
+        {
+                tConsole.line_length--; //Go back on console line buffer
+                tConsole.line[tConsole.line_length] = 0;
+                tConsole.curr_col--;
+                update_cursor(tConsole.curr_col, tConsole.curr_row);
+                write_char(' ', tConsole.curr_col, tConsole.curr_row);
+        }
+}
+
 
 void console_init(){
         /* Init the console structure */
@@ -12,8 +63,8 @@ void console_init(){
         tConsole.CONSOLE_WIDTH = VGA_HEIGHT;
         tConsole.curr_row = 0;
         tConsole.curr_col = 0;
-        tConsole.key = 0;
-        tConsole.oldKey = 0;
+        clear_buffer();
+        tConsole.line_length = 0;
         /* Clear the screen */
         console_clear();
 }
@@ -25,41 +76,35 @@ void printf(const char *str, ...)
         kprintf(str, parameters, &tConsole);
         va_end(parameters);
 }
-/* Processes the input by keyboard */
-char scanf()
+
+void do_keyboard_interrupt()
 {
-        tConsole.oldKey = tConsole.key;
-        tConsole.key = scan_keyboard();
-        if(!(tConsole.oldKey==tConsole.key)) {
-                // printf("hexa=%x\n", abs(tConsole.key));
-                char c = getLastChar();
-                if((c <= 392 || c >= 399) && !tConsole.keyb.special)
+        char c = keyToAscii(abs(scan_keyboard()), &tConsole.keyb);
+        if((c <= 392 || c >= 399) && !tConsole.keyb.special)
+        {
+
+                if(c == 8) //Delete last char
                 {
-                        if(c >= 32 && c <= 126 && c != 94)
-                                printf("%c\0", c);
-                        else if(c == '\n')
-                                printf("\n");
-                        else{
-                        }
-                }else
-                {
-                        printf("%d\n", c);
+                        go_back();
                 }
-                return c;
+                if(c >= 32 && c <= 126 && c != 94)
+                {
+                        printf("%c\0", c);
+                        tConsole.line[tConsole.line_length] = c;
+                        tConsole.line_length++;
+                }
+                else if(c == '\n')
+                {
+                        tConsole.line[tConsole.line_length] = 0;
+                        do_command();
+                }
+                else
+                {
+                }
+        }else
+        {
+                printf("%d\n", c);
         }
-        return 0;
-}
-
-char getLastChar()
-{
-        char lastChar = keyToAscii(abs(tConsole.key), &tConsole.keyb);
-        return lastChar;
-}
-
-void clean()
-{
-        tConsole.key = 0;
-        tConsole.oldKey = 0;
 }
 
 void scroll_up()
