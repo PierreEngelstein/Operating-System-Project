@@ -25,15 +25,16 @@ void init_pics(int pic1, int pic2)
 
 int main()
 {
-        cli();
         init_pics(0x20, 0x27);
+        /* Disable interrupts during initialisation */
+        cli();
         idt_init();
         /* Initialize the console */
         console_init();
-        /* Print some random thing on screen to test */
         printf("Starting OS ...\n");
-        printf(":\\>");
-        sei();
+        printf(">");
+        /* Enable interrupts we want */
+        enable_interrupt(INTERRUPT_KEYBOARD);
         for(;;){}
         return 0;
 }
