@@ -45,6 +45,18 @@ void sei()
         port_byte_out(PIC2_DATA,0x00); // 0000 0000 => no interrupt enabled on PIC2
 }
 
+void enable_interrupt(uint8_t interrupt)
+{
+        int present = port_byte_in(PIC1_DATA);
+        int mask = pow(2, interrupt) & 0xFF;
+        port_byte_out(PIC1_DATA,present & ~mask);
+        
+        present = port_byte_in(PIC2_DATA);
+        mask = (pow(2, interrupt) & 0xFF00) >> 8;
+        port_byte_out(PIC2_DATA,present & ~mask);
+        return;
+}
+
 extern int load_idt();
 extern int irq0();
 extern int irq1();
@@ -112,15 +124,11 @@ int idt_init()
         port_byte_out(PIC1_DATA, 0x01);
         port_byte_out(PIC2_DATA, 0x01);
         /* Mask every interrupt except for keyboard interrupt */
-        port_byte_out(PIC1_DATA,0xfd); // 1111 1101 => only keyboard interrupt enabled on PIC1
-        port_byte_out(PIC2_DATA,0xff); // 1111 1111 => no interrupt enabled on PIC2
+        cli();
 
         //IRQs (TODO : CPU exceptions and syscalls)
         for(int i = 0; i < 16; i++)
-        {
                 createIDTEntry(&(IDT[i + 32]), (unsigned long)irqs[i]);
-                printf("%d\n", (i + 32));
-        }
 
         load_idt(idt_ptr);
         return 0;
