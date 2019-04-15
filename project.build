@@ -20,6 +20,7 @@ src/kernel/memory.c => memory.o
 src/kernel/panic.c => panic.o
 src/kernel/print.c => print.o
 src/kernel/String.c => string.o
+src/kernel/debug.c => debug.o
 
 [drivers] => kernel.bin
 src/kernel/drivers/console.c => console.o
