@@ -31,6 +31,12 @@ void kprintf(const char *string, va_list args, Console *tConsole)
                                         itoa(d, buffx, 16);
                                         kprintf(buffx, args, tConsole);
                                         break;
+                                case 'b':
+                                        d=va_arg(args, signed int);
+                                        char *buffb =NULL;
+                                        itoa(d, buffb, 2);
+                                        kprintf(buffb, args, tConsole);
+                                        break;
                                 case 'c': /* Output an hexadecimal */
                                         d = va_arg(args, int);
                                         write_char(d, tConsole->curr_col, tConsole->curr_row);
