@@ -9,26 +9,30 @@ void clear_buffer()
         tConsole.line[0] = 0;
 }
 
+/* */
 void do_command()
 {
         /* Parse commands */
-        if(strstart(tConsole.line, "clear")) //if starts with 'clear'
+        if(!strcmp(tConsole.line, "clear")) //if starts with 'clear'
         {
                 console_init();
-        }else if (strstart(tConsole.line, "uname"))
+        }else if (!strcmp(tConsole.line, "uname"))
         {
                 printf("\ncustom kernel v0.01");
-        }else if(strstart(tConsole.line, "help"))
+        }else if(!strcmp(tConsole.line, "help"))
         {
                 printf("\nList of all commands :\n");
                 printf("CLEAR       Clears the console\n");
+                printf("DUMP        Prints the value of all registers to the console\n");
                 printf("HELP        Prints this help message\n");
                 printf("SHUTDOWN    Shutdowns the computer\n");
                 printf("UNAME       Prints the name of the system\n");
-        }else if(strstart(tConsole.line, "shutdown"))
+        }else if(!strcmp(tConsole.line, "shutdown"))
         {
                 port_word_out(0x604, 0x2000); //Qemu-specific :-)
-                printf("\nha, not implemented !");
+        }else if(!strcmp(tConsole.line, "dump"))
+        {
+                print_registers();
         }
         else
         {
@@ -40,12 +44,12 @@ void do_command()
                 }
         }
         clear_buffer();
-        printf("\n:\\>");
+        printf("\n>");
 }
 
 void go_back()
 {
-        if(tConsole.curr_col > 3)
+        if(tConsole.curr_col > 1)
         {
                 tConsole.line_length--; //Go back on console line buffer
                 tConsole.line[tConsole.line_length] = 0;
@@ -98,9 +102,6 @@ void do_keyboard_interrupt()
                         tConsole.line[tConsole.line_length] = 0;
                         do_command();
                 }
-                else
-                {
-                }
         }else
         {
                 printf("%d\n", c);
@@ -109,7 +110,6 @@ void do_keyboard_interrupt()
 
 void scroll_up()
 {
-
 }
 void pause() {}
 
