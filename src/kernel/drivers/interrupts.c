@@ -114,7 +114,7 @@ int idt_init()
         /* ICW1 - Begin initialization */
         port_byte_out(PIC1_COMM, 0x11);
         port_byte_out(PIC2_COMM, 0x11);
-        /* ICW2 - Remap offset address of IDT */
+        /* ICW2 - Remap offset address of IDT, where PIC1 is remapped at 32 (0x20) and PIC2 at 40 (0x28) */
         port_byte_out(PIC1_DATA, 0x20);
         port_byte_out(PIC2_DATA, 0x28);
         /* ICW3 - Setup cascading */
