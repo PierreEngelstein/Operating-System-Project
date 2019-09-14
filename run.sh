@@ -1,3 +1,1 @@
-echo "Running bin image ..."
-qemu-system-i386 -drive format=raw,file=os.bin
-echo "Stopped"
+qemu-system-${1} -drive format=raw,file=os.bin -m 16M
