@@ -24,6 +24,20 @@ typedef unsigned int uint32;
 typedef int int32;
 #endif
 
+#ifndef uint64
+typedef unsigned long uint64;
+#endif
+
+#ifndef int64
+typedef long int64;
+#endif
+
 #ifndef BOOL
 typedef uint8 BOOL;
 #endif
+
+#ifndef VOID
+typedef void VOID;
+#endif
+
+typedef uint32 size_t;
