@@ -1,16 +1,7 @@
 #include "types.h"
 
-/* Interrupts */
-typedef struct //8 bytes length
-{
-        unsigned short int offset_lowerbits; //Offset bits 0..15
-        unsigned short int selector; //A code segment selector in GDT or LDT
-        unsigned char zero; //Unused
-        unsigned char type_attr; //Type and attributes
-        unsigned short int offset_higherbits; //Offset bits 16..31
-}IDT_Entry;
+/* Initializes the interrupts */
 int idt_init();
-int createIDTEntry(IDT_Entry *entry, unsigned long irq_address);
 /* Disables all interrupts */
 void cli();
 /* Enables all interrupts */

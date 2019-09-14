@@ -16,17 +16,6 @@
 #define TRUE 1
 #endif
 
-/* Convert an integer to a string */
-void itoa(int value, char* buffer, int base);
-/* Reverses the string array given in argument */
-char* reverse(char *buffer, int i, int j);
-/* Swaps the two strings */
-void swap(char *x, char *y);
-/* Compares 2 strings */
-int strcmp(const char* p1, const char* p2);
-const char *strstr(const char *str1, const char *str2);
-BOOL strstart(const char *str1, const char *str2);
-
 /**
     Print routines
 **/
@@ -72,3 +61,4 @@ uint32_t ebp;
 
 /* Prints the value of all registers to screen (dump of registers is done inside) */
 void print_registers();
+

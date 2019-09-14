@@ -1,7 +1,8 @@
-typedef long word;
+typedef char MEMBLK;
+#include "types.h"
 
-#define lsize sizeof(word)
-#define lmask (lsize - 1)
+/** Initializes the memory. */
+VOID _k_init_mem();
 
-void *memmove(void *dest, const void *src, unsigned long count);
-void *memcpy(void *dest, const void *src, unsigned long count);
+/** Allocates size bytes on the heap. Returns a pointer to the base of the block allocated */
+void *_k_malloc(size_t size);
