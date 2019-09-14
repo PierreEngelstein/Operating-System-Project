@@ -11,11 +11,20 @@ s_stage_start      db "Second stage bootloader memory addresses : ", 10, 13, "St
 s_stage_end        db "End   : ", 0
 s_stage_size       db "Total size : ", 0
 s_lowmem_size      db "Low memory size : ", 0
+s_highmem_size     db "High memory size : ", 0
+s_ext1_16          db "Extended memory between 1 MB and 16 MB : ", 0
+s_ext16            db "Extended memory above 16 MB : ", 0
+s_ext16_mult       db " * 64 KB", 0
+s_ext_fail         db "Failed to get extended memory !", 10, 13, 0
+
 s_a20_check        db "Checking A20 gate ...", 10, 13, 0
 s_a20_enabled      db "A20 gate enabled !", 10, 13, 0
 s_a20_disabled     db "A20 gate is disabled, jumping to enable it...", 10, 13, 0
 s_kernel_read      db "Reading kernel sectors ...", 10, 13, 0
 s_kernel_endread   db "Written kernel sectors at ", 0
+s_kernel_long_ok   db "Long mode is okay", 0
+s_kernel_long_no   db "Long mode is not available", 0
+s_kernel_cpuid_no  db "CPUID is not available", 10, 13, 0
 ;-------------------------------------
 
 ;Error messages :

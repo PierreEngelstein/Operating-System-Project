@@ -43,3 +43,30 @@ gdt_descriptor:
 
 CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
+
+; 64 bit mode GDT
+GDT64:
+   .Null: equ $ - GDT64    ; Null descriptor
+   dw 0xffff               ; Limit (Low)
+   dw 0                    ; Base (low)
+   db 0                    ; Base (middle)
+   db 0                    ; Access
+   db 1                    ; Granularity
+   db 0                    ; Base (High)
+   .Code: equ $ - GDT64    ; Code descriptor
+   dw 0                    ; Limit (low)
+   dw 0                    ; Base (low)
+   db 0                    ; Base (middle)
+   db 10011010b            ; Access (exec / read)
+   db 10101111b            ; Granularity, 64 bits flag, limit19:16
+   db 0                    ; Base (high)
+   .Data: equ $ - GDT64    ; Data descriptor
+   dw 0                    ; Limit (low)
+   dw 0                    ; Base(low)
+   db 0                    ; Base (middle)
+   db 10010010b            ; Access (read/write)
+   db 00000000b            ; Granularity
+   db 0                    ; Base (high)
+   .Pointer:               ; The GDT-pointer
+   dw $ - GDT64 - 1
+   dq GDT64

@@ -6,6 +6,7 @@
 ;-------------------------------
 [bits 16]
 [org 0x8000]
+
 ;Before we do anything, we setup the data segment, the extended segment and the stack
 cli                            ;We are not safe to use interruptions here (old BIOSes)
 ;Setup the registers
@@ -51,14 +52,14 @@ mov bx, s_bytes
 call print_str
 call goToLine
 
-int 0x12                      ;Get the low-memory size (KiB) with interrupt 12h (result saved in ax)
+;--- Get and print low memory map
+call GetLowMem
 mov bx, s_lowmem_size         ;And print it
 call print_str
 mov cx, 10
 call print_number
 mov bx, s_KiB
 call print_str
-call goToLine
 call goToLine
 
 ;Enable the A20 gate via BIOS's interrupts (will do other methods later on...)
@@ -94,9 +95,9 @@ mov ax, KERNEL_LOCATION
 mov cx, 16
 call print_number
 
-
 ;Switch to protected mode
 call switch_to_pm
+; call enableLongMode
 
 jmp $
 
@@ -155,18 +156,23 @@ disk_load:
      call goToLine
      cli
      jmp $
-;----------Includes needed----------
-%include "src/arch_x86/print.asm"
-%include "src/arch_x86/string_ctes.asm"
-%include "src/arch_x86/ct.asm"
-%include "src/arch_x86/gdt.asm"
-%include "src/arch_x86/switch_32.asm"
-;-----------------------------------
 
+fail:
+   mov bx, s_ext_fail
+   call print_str
+   jmp $
+
+;----------Includes needed----------
+%include "src/arch/i386/boot/print.asm"
+%include "src/arch/i386/boot/mem.asm"
+%include "src/arch/i386/boot/string_ctes.asm"
+%include "src/arch/i386/boot/ct.asm"
+%include "src/arch/i386/boot/gdt.asm"
+%include "src/arch/i386/boot/switch_32.asm"
+;-----------------------------------
 ;Protected mode code (Kernel loader)
 [bits 32]
 beginPM:
-   ; jmp $
    jmp KERNEL_LOCATION
 
 ;We make sure this file is exactly the size we want, given the size in ct.asm

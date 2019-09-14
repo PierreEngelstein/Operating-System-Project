@@ -1,13 +1,8 @@
 [bits 32]
-[extern main]
-[global _start]
+extern main
+global _start
 ; TODO : setup segments and stack
-mov eax, 0x9000      ;Update the segment register
-; mov ds, eax
-; mov ss, eax
-; mov es, eax
-; mov fs, eax
-; mov gs, eax
+mov eax, 0x9000
 
 mov ebp, 0x80000     ;Setup the stack at the location we want
 mov esp, ebp
@@ -156,3 +151,17 @@ irq15:
    call irq15_handler
    popa
    ret
+
+
+; global gdt_install
+; extern _gdtr
+; extern printf
+; gdt_install:
+;    lgdt [_gdtr]
+;    ; mov ax, 0x10
+;    ; mov ds, ax
+;    ; mov es, ax
+;    ; mov fs, ax
+;    ; mov gs, ax
+;    ; mov ss, ax
+;    ret
