@@ -1,6 +1,7 @@
 /* Console driver */
 /* routines : print, get input(with echoing or not), basic commands (e.g. : man/help), scroll up / down */
 #include "lib.h"
+#include "string.h"
 #include <stdarg.h>
 
 void clear_buffer()
@@ -12,6 +13,7 @@ void clear_buffer()
 /* */
 void do_command()
 {
+        tolower(tConsole.line, tConsole.line);
         /* Parse commands */
         if(!strcmp(tConsole.line, "clear")) //if starts with 'clear'
         {
