@@ -1,6 +1,7 @@
 import os
 import subprocess
 import math
+import sys
 
 OPERATIONS_DONE = 0
 operations = 0
@@ -42,15 +43,15 @@ def Command(command, warnings):
         err = err.decode()
         if err != "":
                 if (warnings == True) and ("warning" in err):
-                        print_color(err, Color.CYELLOW)
+                        print(err)
                         result = 2
                 if (not "warning" in err):
-                        print_color(err, Color.CRED)
+                        print(err)
                         result = 1
         return result
 
 def count_op(file):
-        f = open("project.build", "r")
+        f = open(file, "r")
         count = 0
         for line in f:
                 if(line.startswith("b ")):
@@ -103,15 +104,18 @@ def buildFile(type, fileIn, fileOut, config):
                         ret = config["bin_folder"] + fileOut
                 i += 1
         OPERATIONS_DONE += 1
-        print_color( "[" + ToString(OPERATIONS_DONE) + "/" + ToString(operations) + "] compiling " + fileIn + " into " + fileOut, Color.CGREEN)
+        print_color( "[" + ToString(OPERATIONS_DONE) + "/" + ToString(operations) + "] compiling " + fileIn + " into\t" + fileOut, Color.CGREEN)
 
         res = Command(command, True)
         if res == 1: ret = None
         return ret
 
-operations = count_op("project.build") + 1
+print("Building Operating System using " + sys.argv[1])
 
-f = open("project.build", "r")
+filename = sys.argv[1]
+operations = count_op(filename) + 1
+
+f = open(filename, "r")
 type = ""
 config = {}
 build_file = list()

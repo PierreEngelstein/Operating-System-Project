@@ -1,7 +1,7 @@
 [config]
 delete_on_termination=True
 
-build_options=-ffreestanding -fno-pie -m32 -Wall
+build_options=-ffreestanding -fno-pie -m32 -Wall -DI386
 linker_options=-Ttext 0x9000 -m elf_i386 -s --oformat binary
 
 bin_folder=bin/
@@ -10,29 +10,32 @@ includes=src/includes
 main_output=os.bin
 output_kernel=kernel.bin
 
-arch_x86_build=nasm -f bin %INPUT %OUTPUT
+arch_i386_build=nasm -f bin %INPUT %OUTPUT
 kernel_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
 kernel_asm_build=nasm -f elf32 %INPUT %OUTPUT %ADDRET
 drivers_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
+lib_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
 
-[arch_x86]
-b src/arch_x86/boot0.asm => boot0.bin
-b src/arch_x86/boot1.asm => boot1.bin
+[arch_i386]
+b src/arch/i386/boot/boot0.asm => boot0.bin
+b src/arch/i386/boot/boot1.asm => boot1.bin
 
 [kernel_asm]
-b src/kernel/entry.asm => entry.o
+b src/arch/i386/kernel/entry.asm => entry.o
 
 [kernel]
 b src/kernel/io.c => io.o
 b src/kernel/main.c => main.o
-b src/kernel/maths.c => maths.o
 b src/kernel/memory.c => memory.o
 b src/kernel/panic.c => panic.o
 b src/kernel/print.c => print.o
-b src/kernel/String.c => string.o
 b src/kernel/debug.c => debug.o
 
 [drivers]
 b src/kernel/drivers/console.c => console.o
-b src/kernel/drivers/interrupts.c => interrupts.o
+b src/arch/i386/kernel/interrupts.c => interrupts.o
 b src/kernel/drivers/keyboard.c => keyboard.o
+
+[lib]
+b src/lib/maths.c => maths.o
+b src/lib/String.c => string.o

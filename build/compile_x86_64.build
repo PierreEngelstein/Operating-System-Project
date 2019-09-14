@@ -1,0 +1,41 @@
+[config]
+delete_on_termination=True
+
+build_options=-ffreestanding -fno-pie -Wall -DX86_64
+linker_options=-Ttext 0x9000 -m elf_x86_64 -s --oformat binary
+
+bin_folder=bin/
+includes=src/includes
+
+main_output=os.bin
+output_kernel=kernel.bin
+
+arch_x86_64_build=nasm -f bin %INPUT %OUTPUT
+kernel_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
+kernel_asm_build=nasm -f elf64 %INPUT %OUTPUT %ADDRET
+drivers_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
+lib_build=gcc %OPTIONS %INCLUDES %INPUTC %OUTPUT %ADDRET
+
+[arch_x86_64]
+b src/arch/x86_64/boot/boot0.asm => boot0.bin
+b src/arch/x86_64/boot/boot1.asm => boot1.bin
+
+[kernel_asm]
+b src/arch/x86_64/kernel/entry.asm => entry.o
+
+[kernel]
+b src/kernel/io.c => io.o
+b src/kernel/main.c => main.o
+b src/kernel/memory.c => memory.o
+b src/kernel/panic.c => panic.o
+b src/kernel/print.c => print.o
+b src/kernel/debug.c => debug.o
+
+[drivers]
+b src/kernel/drivers/console.c => console.o
+b src/arch/x86_64/kernel/interrupts.c => interrupts.o
+b src/kernel/drivers/keyboard.c => keyboard.o
+
+[lib]
+b src/lib/maths.c => maths.o
+b src/lib/String.c => string.o
