@@ -1,4 +1,5 @@
 #include "lib.h"
+#include "string.h"
 
 void itoa(int input, char* buffer, int base)
 {
@@ -56,7 +57,8 @@ int strcmp(const char* p1, const char* p2)
         const unsigned char* s1 = (const unsigned char*) p1;
         const unsigned char* s2 = (const unsigned char*) p2;
         unsigned char c1, c2;
-        do {
+        do 
+        {
                 c1 = (unsigned char) *s1++;
                 c2 = (unsigned char) *s2++;
                 if(c2 == '\0')
@@ -82,9 +84,7 @@ const char *strstr(const char *str1, const char *str2)
     while(str1[i] != '\0' && str2[j] != '\0')
     {
         if(str2[j] == str1[i])
-        {
             j++;
-        }
         else
         {
             i = i - j;
@@ -93,16 +93,50 @@ const char *strstr(const char *str1, const char *str2)
         i++;
     }
     if(str2[j] == '\0')
-    {
         return &str1[i - j];
-    }
     else
-    {
         return (NULL);
-    }
 }
 
 BOOL strstart(const char *str1, const char *str2)
 {
     return strstr(str1, str2) == str1;
+}
+
+char *strcpy(char *dest, const char *src)
+{
+    char *tmp = dest;
+
+    while((*tmp++ = *src++) != '\0'){}
+
+    return tmp;
+}
+
+char *strncpy(char *dest, const char *src, size_t len)
+{
+    char *tmp = dest;
+
+    while(len)
+    {
+        if((*tmp = *src) != '\0')
+            src++;
+        tmp++;
+        len--;
+    }
+
+    return tmp;
+}
+
+char *tolower(char *dest, char *str)
+{
+    char *tmp = dest;
+
+    while((*tmp) != '\0')
+    {
+        if(*tmp >= 'A' && *tmp <= 'Z')
+            *tmp = *tmp + 32;
+        *tmp++;
+    }
+
+    return tmp;
 }
