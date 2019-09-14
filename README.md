@@ -2,7 +2,6 @@
 
 Main project on creating a bootloader & kernel using assembly and C.
 <br>
-Last modified : 12.08.2018
 
 ## Setting up the environment
 Install the following tools in order to compile & run the code :
@@ -15,8 +14,13 @@ Install the following tools in order to compile & run the code :
 
 ## Compiling the source
 - Clone the repository on a location of your choice : `git clone https://github.com/PierreEngelstein/Operating-System-Project.git`
-- Run `~/.assemble.sh`.
-- Run `qemu-system-i386 -hda bin/boot.bin` to run the bootloader.
+- Chose the prossessor architecure you want to build your kernel on:
+   - i386 for 32-bit intel processor
+        - Compile using `./assemble.sh i386`
+        - Run using `./run.sh i386`
+   - x86_64 for 64-bit intel processor
+        - Compile using `./assemble.sh x86_64`
+        - Run using `./run.sh x86_64`
 
 ## Project Roadmap
 - [x] First stage Bootloader
@@ -32,8 +36,11 @@ Install the following tools in order to compile & run the code :
   - [x] begin Kernel execution
 - [ ] Kernel (*To be defined*)
   - [x] Load IDT
-  - [ ] Keyboard driver
+  - [x] Keyboard driver
   - [ ] Shell
+  - [ ] Memory management
+    - [x] Basic memory management
+    - [ ] Advanced memory management
 
 ## Author
 Made by Pierre Engelstein

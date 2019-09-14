@@ -28,5 +28,11 @@ Description of the boot sequence of this little project
   - [x] Jumps to the core protected-mode code
   - [x] Jumps where the kernel was loaded
 - [x] The kernel is now started
+
+## Kernel startup
+- [x] Initialize PIC
+- [x] Initialize interrupts
+- [x] Initialize kernel console
+
 ## Author
 Made by Pierre Engelstein
