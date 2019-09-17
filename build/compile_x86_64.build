@@ -22,6 +22,8 @@ b src/arch/x86_64/boot/boot1.asm => boot1.bin
 
 [kernel_asm]
 b src/arch/x86_64/kernel/entry.asm => entry.o
+b src/arch/x86_64/kernel/except.asm => except.o
+b src/arch/x86_64/kernel/interrupt.asm => interrupt.o
 
 [kernel]
 b src/kernel/io.c => io.o
@@ -30,10 +32,14 @@ b src/kernel/memory.c => memory.o
 b src/kernel/panic.c => panic.o
 b src/kernel/print.c => print.o
 b src/kernel/debug.c => debug.o
+b src/kernel/int_irq.c => int_irq.o
+b src/kernel/int_except.c => int_except.o
+b src/kernel/syscall.c => syscall.o
+b src//kernel/interrupts.c => interrupts.o
 
 [drivers]
 b src/kernel/drivers/console.c => console.o
-b src/arch/x86_64/kernel/interrupts.c => interrupts.o
+
 b src/kernel/drivers/keyboard.c => keyboard.o
 
 [lib]
