@@ -1,5 +1,6 @@
 [bits 16]
 switch_to_pm:
+   mov edx, gdt_descriptor
    cli                    ;Avoid bugs : disable interrupts
    lgdt [gdt_descriptor]  ;Loads the Global Descriptor Table
    mov eax, cr0           ;Changes the protected-mode bit indicator (cr0)
