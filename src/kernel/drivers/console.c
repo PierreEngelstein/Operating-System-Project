@@ -10,7 +10,6 @@ void clear_buffer()
         tConsole.line[0] = 0;
 }
 
-/* */
 void do_command()
 {
         tolower(tConsole.line, tConsole.line);
@@ -31,7 +30,7 @@ void do_command()
                 printf("UNAME       Prints the name of the system\n");
         }else if(!strcmp(tConsole.line, "shutdown"))
         {
-                port_word_out(0x604, 0x2000); //Qemu-specific :-)
+                KnShutdown();
         }else if(!strcmp(tConsole.line, "dump"))
         {
                 print_registers();
