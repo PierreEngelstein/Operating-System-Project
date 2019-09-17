@@ -67,7 +67,7 @@ void kprintf(const char *string, va_list args, Console *tConsole)
 void write_char(const char c, int col, int row)
 {
         uint16_t index = (col + row * VGA_WIDTH) * 2; /* Transforms the (col, row) 2D coordinate to 1D index */
-        char *video = (char*) VGA_MEM;
+        char *video = (char*)(VGA_MEM);
         video = video + index;
         *video = c;
         video++;

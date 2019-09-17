@@ -9,7 +9,6 @@ VOID _k_mem_SetOccupied(int i);
 VOID *_k_mem_GetFirstFreeBlock();
 VOID *_k_mem_GetNFreeBlocks(size_t n);
 
-
 #define MEMSIZE 4096  //Only 4KB for the moment, will extend this maybe one day
 
 int _k_mem_start = 0x100000; // Where the heap starts
@@ -36,7 +35,6 @@ void *_k_malloc(size_t _size)
  * This section is only internal function that are not intended to be used outside of here (that's why they are not on the memory header).
  * Globally, they handle low-level memory block state management.
  */
-#pragma region PRIVATE
 
 /** Returns true if the given index is correct. */
 BOOL _k_mem_CheckIndex(int i)
@@ -98,10 +96,8 @@ VOID *_k_mem_GetNFreeBlocks(size_t n)
 {
         int i = 0;
         void *tmp = 0;
-        // printf("requesting size %d\n", n);
         while(i < sizeof(MEMBLK) * 8 * MEMSIZE - n)
         {
-                // printf("(i=%d) ", i);
                 if(_k_mem_GetFree(i))
                 {
                         int j = 1;
@@ -115,7 +111,6 @@ VOID *_k_mem_GetNFreeBlocks(size_t n)
                         }
                         if(j == n)
                         {
-                                // printf("%x %x %x  ", _k_mem_start, i, _k_mem_start + i);
                                 return (void *)(_k_mem_start + i);
                         }
                 }
@@ -123,5 +118,3 @@ VOID *_k_mem_GetNFreeBlocks(size_t n)
         }
         return (void *)0;
 }
-
-#pragma endregion
