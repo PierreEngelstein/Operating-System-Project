@@ -36,3 +36,8 @@ void print_registers()
         printf("eax = %x ; ebx = %x ; ecx = %x ; edx = %x\n", eax, ebx, ecx, edx);
         printf("esi = %x ; edi = %x ; esp = %x ; ebp = %x\n", esi, edi, esp, ebp);
 }
+
+void breakpoint()
+{
+        __asm__("int $3");
+}

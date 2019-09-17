@@ -61,4 +61,5 @@ uint32_t ebp;
 
 /* Prints the value of all registers to screen (dump of registers is done inside) */
 void print_registers();
+void breakpoint();
 
