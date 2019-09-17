@@ -1,6 +1,7 @@
 #include "lib.h"
 #include "string.h"
 #include "k_memory.h"
+#include "syscall.h"
 #define PIC1 0x20
 #define PIC2 0xA0
 #define ICW1 0x11
@@ -116,17 +117,15 @@ typedef struct gdtr
 //         return 0;
 // }
 
-int main(int a, int b)
+int main(int a)
 {
-        // struct gdtr *test = (struct gdtr *)a;
+        struct gdtr *test = (struct gdtr *)a;
 
-        // struct gdt *test_gdt = (a->m_base - a->m_limit);
+        struct gdt *test_gdt = (test->m_base + test->m_limit);
         
         init_pics(0x20, 0x27);
-        // // /* Disable interrupts during initialisation */
-        _k_init_mem();
         cli();
-        
+        _k_init_mem();
         idt_init();
         
         /* Initialize the console */
@@ -149,7 +148,8 @@ int main(int a, int b)
         // printf("args = [a:%x; b:%x]\n", a, b);
         // printf("gdtr = [base:%x; limit:%x]\n", a->m_base, a->m_limit);
         // printf("gdt = [limit:%x baseLo:%x; baseMid:%x; access:%x; granularity:%x; baseHi:%x]\n", test_gdt->limit, test_gdt->baseLo, test_gdt->baseMid, test_gdt->access, test_gdt->granularity, test_gdt->baseHi);
-        printf("Starting OS ...\n");
+        printf("Starting OS ... %x (%d, %d)\n", a, test->m_base, test->m_limit);
+        // printf("%x\n", test_gdt->granularity);
         #ifdef I386
         printf("32 bit system !\n");
         #elif defined X86_64
@@ -160,6 +160,10 @@ int main(int a, int b)
         // /* Enable interrupts we want */
         enable_interrupt(INTERRUPT_KEYBOARD);
         // enable_interrupt(INTERRUPT_TIMER);
+        // printf("%d\n", 3/0);
+        // __asm__("movl $1, %eax");
+        int c = KnKeyboard();
+
         for(;;){}
         return 0;
 }
