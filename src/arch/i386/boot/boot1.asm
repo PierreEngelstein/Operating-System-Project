@@ -163,12 +163,12 @@ fail:
    jmp $
 
 ;----------Includes needed----------
-%include "src/arch/i386/boot/print.asm"
-%include "src/arch/i386/boot/mem.asm"
-%include "src/arch/i386/boot/string_ctes.asm"
-%include "src/arch/i386/boot/ct.asm"
+%include "src/includes/boot/print.asm"
+%include "src/includes/boot/mem.asm"
+%include "src/includes/boot/ct.asm"
+%include "src/includes/boot/string_ctes.asm"
+%include "src/includes/boot/switch_32.asm"
 %include "src/arch/i386/boot/gdt.asm"
-%include "src/arch/i386/boot/switch_32.asm"
 ;-----------------------------------
 ;Protected mode code (Kernel loader)
 [bits 32]

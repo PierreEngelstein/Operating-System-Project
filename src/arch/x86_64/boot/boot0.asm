@@ -169,7 +169,7 @@ s_diskreadError    db "Failed to read second stage bootloader", 10, 13, "  => [a
 
 s_hex_out          db '0x0000', 10, 13, 0
 
-%include "src/arch/x86_64/boot/ct.asm"
+%include "src/includes/boot/ct.asm"
 
 ;Magic signature
 times 510 - ($ - $$) db 0
